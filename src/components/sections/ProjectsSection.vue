@@ -29,6 +29,16 @@ const listed = computed(() => (showAll.value ? projects : featured.value))
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
             </svg>
             <div class="flex items-center gap-3">
+              <span
+                v-if="!project.github"
+                class="flex items-center gap-1 font-mono text-[10px] text-[#52525b] border border-[#2c2c34] rounded px-1.5 py-0.5"
+                title="Repositório privado"
+              >
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                privado
+              </span>
               <a
                 v-if="project.github"
                 :href="project.github"
