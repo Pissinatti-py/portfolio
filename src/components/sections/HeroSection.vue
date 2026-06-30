@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { personal } from '@/data/personal'
+import { t, tr } from '@/i18n'
 import { useTypewriter } from '@/composables/useTypewriter'
 
 const { displayed: typedName, done: nameDone } = useTypewriter(personal.name, 55, 300)
@@ -32,7 +33,7 @@ onMounted(() => {
 
     <div class="max-w-5xl mx-auto px-6 pt-24 pb-16">
       <p class="font-mono text-sm text-[#a855f7] tracking-widest uppercase mb-6 animate-fade-in">
-        Olá, meu nome é
+        {{ t('hero.greeting') }}
       </p>
 
       <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-4 min-h-[1.2em]">
@@ -47,7 +48,7 @@ onMounted(() => {
           v-if="showSubtitle"
           class="text-2xl md:text-3xl font-medium text-[#71717a] mb-6"
         >
-          {{ personal.role }}
+          {{ tr(personal.role) }}
         </h2>
       </Transition>
 
@@ -56,7 +57,7 @@ onMounted(() => {
           v-if="showTagline"
           class="text-lg text-[#52525b] max-w-lg mb-10"
         >
-          {{ personal.tagline }}
+          {{ tr(personal.tagline) }}
         </p>
       </Transition>
 
@@ -66,7 +67,7 @@ onMounted(() => {
             href="#projetos"
             class="px-5 py-2.5 bg-[#a855f7] hover:bg-[#9333ea] text-white text-sm font-medium rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/20"
           >
-            Ver projetos
+            {{ t('hero.cta') }}
           </a>
           <a
             :href="personal.github"

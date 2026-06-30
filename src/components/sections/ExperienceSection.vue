@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { experience } from '@/data/experience'
+import { t, tr } from '@/i18n'
 import RevealBlock from '@/components/ui/RevealBlock.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 </script>
@@ -7,7 +8,7 @@ import SectionHeading from '@/components/ui/SectionHeading.vue'
 <template>
   <section id="experiencia" class="py-28 max-w-5xl mx-auto px-6">
     <RevealBlock>
-      <SectionHeading label="04. trajetória" title="Experiência" />
+      <SectionHeading :label="t('section.experience.label')" :title="t('section.experience.title')" />
     </RevealBlock>
 
     <div class="relative">
@@ -27,15 +28,15 @@ import SectionHeading from '@/components/ui/SectionHeading.vue'
             <div class="bg-[#18181c] border border-[#27272a] rounded-xl p-6 hover:border-[#a855f7]/30 transition-colors duration-300">
               <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-3">
                 <div>
-                  <h3 class="font-semibold text-base">{{ job.role }}</h3>
+                  <h3 class="font-semibold text-base">{{ tr(job.role) }}</h3>
                   <p class="text-[#a855f7] text-sm font-medium">{{ job.company }}</p>
                 </div>
                 <span class="font-mono text-xs text-[#52525b] bg-[#222228] px-3 py-1 rounded-full whitespace-nowrap self-start">
-                  {{ job.period }}
+                  {{ tr(job.period) }}
                 </span>
               </div>
 
-              <p class="text-[#71717a] text-sm leading-relaxed mb-4">{{ job.description }}</p>
+              <p class="text-[#71717a] text-sm leading-relaxed mb-4">{{ tr(job.description) }}</p>
 
               <ul class="flex flex-wrap gap-1.5">
                 <li

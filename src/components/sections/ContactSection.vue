@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { personal } from '@/data/personal'
+import { t } from '@/i18n'
 import RevealBlock from '@/components/ui/RevealBlock.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 </script>
@@ -7,14 +8,13 @@ import SectionHeading from '@/components/ui/SectionHeading.vue'
 <template>
   <section id="contato" class="py-28 max-w-5xl mx-auto px-6">
     <RevealBlock>
-      <SectionHeading label="05. contato" title="Vamos conversar" />
+      <SectionHeading :label="t('section.contact.label')" :title="t('section.contact.title')" />
     </RevealBlock>
 
     <div class="max-w-xl">
       <RevealBlock :delay="100">
         <p class="text-[#71717a] leading-relaxed mb-10">
-          Estou aberto a novas oportunidades, projetos freelance ou só uma boa conversa sobre tecnologia.
-          Se quiser entrar em contato, é só me enviar um e-mail.
+          {{ t('contact.intro') }}
         </p>
       </RevealBlock>
 

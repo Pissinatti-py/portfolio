@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { skills } from '@/data/skills'
+import { t, tr } from '@/i18n'
 import RevealBlock from '@/components/ui/RevealBlock.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 </script>
@@ -8,18 +9,18 @@ import SectionHeading from '@/components/ui/SectionHeading.vue'
   <section id="skills" class="py-28 bg-[#18181c]/50">
     <div class="max-w-5xl mx-auto px-6">
       <RevealBlock>
-        <SectionHeading label="03. habilidades" title="Skills" />
+        <SectionHeading :label="t('section.skills.label')" :title="t('section.skills.title')" />
       </RevealBlock>
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <RevealBlock
           v-for="(group, i) in skills"
-          :key="group.category"
+          :key="group.category.en"
           :delay="i * 80"
         >
           <div class="bg-[#18181c] border border-[#27272a] rounded-xl p-6 hover:border-[#a855f7]/30 transition-colors duration-300">
             <h3 class="font-mono text-xs text-[#a855f7] tracking-widest uppercase mb-4">
-              {{ group.category }}
+              {{ tr(group.category) }}
             </h3>
             <ul class="flex flex-wrap gap-2">
               <li

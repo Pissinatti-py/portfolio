@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { projects } from '@/data/projects'
+import { t, tr, tProjectsShowAll } from '@/i18n'
 import RevealBlock from '@/components/ui/RevealBlock.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 
@@ -12,7 +13,7 @@ const listed = computed(() => (showAll.value ? projects : featured.value))
 <template>
   <section id="projetos" class="py-28 max-w-5xl mx-auto px-6">
     <RevealBlock>
-      <SectionHeading label="02. projetos" title="Projetos" />
+      <SectionHeading :label="t('section.projects.label')" :title="t('section.projects.title')" />
     </RevealBlock>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -32,12 +33,12 @@ const listed = computed(() => (showAll.value ? projects : featured.value))
               <span
                 v-if="!project.github"
                 class="flex items-center gap-1 font-mono text-[10px] text-[#52525b] border border-[#2c2c34] rounded px-1.5 py-0.5"
-                title="Repositório privado"
+                :title="t('projects.privateTitle')"
               >
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
-                privado
+                {{ t('projects.private') }}
               </span>
               <a
                 v-if="project.github"
@@ -68,9 +69,9 @@ const listed = computed(() => (showAll.value ? projects : featured.value))
 
           <div class="flex-1">
             <h3 class="text-base font-semibold mb-2 group-hover:text-[#c084fc] transition-colors duration-200">
-              {{ project.name }}
+              {{ tr(project.name) }}
             </h3>
-            <p class="text-[#71717a] text-sm leading-relaxed">{{ project.description }}</p>
+            <p class="text-[#71717a] text-sm leading-relaxed">{{ tr(project.description) }}</p>
           </div>
 
           <ul class="flex flex-wrap gap-1.5 mt-auto pt-2">
@@ -92,7 +93,7 @@ const listed = computed(() => (showAll.value ? projects : featured.value))
           class="font-mono text-sm text-[#a855f7] hover:text-[#c084fc] transition-colors border border-[#27272a] hover:border-[#a855f7]/50 px-6 py-2.5 rounded-lg"
           @click="showAll = !showAll"
         >
-          {{ showAll ? 'Mostrar menos' : `Ver todos os projetos (${projects.length})` }}
+          {{ showAll ? t('projects.showLess') : tProjectsShowAll(projects.length) }}
         </button>
       </div>
     </RevealBlock>
