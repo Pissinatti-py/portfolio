@@ -80,6 +80,39 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    id: 9,
+    name: {
+      pt: "FastAPI Observability & SSE",
+      en: "FastAPI Observability & SSE",
+    },
+    description: {
+      pt: "Serviço FastAPI que demonstra Server-Sent Events e observabilidade com Prometheus: jobs rodam de forma assíncrona e publicam progresso por um hub pub/sub (Redis ou memória), o navegador acompanha ao vivo via SSE e cada requisição é instrumentada e renderizada num dashboard Grafana.",
+      en: "FastAPI service showcasing Server-Sent Events and Prometheus observability: jobs run asynchronously and publish progress through a pub/sub hub (Redis or in-memory), the browser watches live over SSE, and every request is instrumented and rendered on a Grafana dashboard.",
+    },
+    stack: [
+      "Python",
+      "FastAPI",
+      "SSE",
+      "Prometheus",
+      "Grafana",
+      "Redis",
+      "Docker",
+    ],
+    github: "https://github.com/Pissinatti-py/fastapi-observability-demo",
+    featured: true,
+  },
+  {
+    id: 10,
+    name: { pt: "Webhook Ingester", en: "Webhook Ingester" },
+    description: {
+      pt: "Front-end de webhooks de alta vazão em Rust (axum + Redis) que protege uma aplicação mais lenta: verifica a assinatura HMAC-SHA256, descarta duplicatas e enfileira o payload no Redis em operações O(1), absorvendo picos e retries dos provedores antes que cheguem ao servidor de aplicação.",
+      en: "High-throughput webhook front-end in Rust (axum + Redis) that shields a slower app: it verifies the HMAC-SHA256 signature, drops duplicates and queues the payload onto Redis in O(1) operations, absorbing provider bursts and retry storms before they reach the application server.",
+    },
+    stack: ["Rust", "axum", "Redis", "HMAC", "Docker"],
+    github: "https://github.com/Pissinatti-py/webhook-ingester",
+    featured: true,
+  },
+  {
     id: 1,
     name: { pt: "Sample360 Core", en: "Sample360 Core" },
     description: {
