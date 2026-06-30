@@ -105,8 +105,8 @@ export const projects: Project[] = [
     id: 10,
     name: { pt: "Webhook Ingester", en: "Webhook Ingester" },
     description: {
-      pt: "Front-end de webhooks de alta vazão em Rust (axum + Redis) que protege uma aplicação mais lenta: verifica a assinatura HMAC-SHA256, descarta duplicatas e enfileira o payload no Redis em operações O(1), absorvendo picos e retries dos provedores antes que cheguem ao servidor de aplicação.",
-      en: "High-throughput webhook front-end in Rust (axum + Redis) that shields a slower app: it verifies the HMAC-SHA256 signature, drops duplicates and queues the payload onto Redis in O(1) operations, absorbing provider bursts and retry storms before they reach the application server.",
+      pt: "Gateway de webhooks de alta vazão em Rust (axum + Redis) que protege uma aplicação mais lenta: verifica a assinatura HMAC-SHA256, descarta duplicatas e enfileira o payload no Redis em operações O(1), absorvendo picos e retries dos provedores antes que cheguem ao servidor de aplicação. Exemplo: colocado na frente de um worker FastAPI, recebe a tempestade de retries do webhook do Stripe e entrega cada evento uma única vez, no ritmo do worker.",
+      en: "High-throughput webhook gateway in Rust (axum + Redis) that shields a slower app: it verifies the HMAC-SHA256 signature, drops duplicates and queues the payload onto Redis in O(1) operations, absorbing provider bursts and retry storms before they reach the application server. Example: placed in front of a FastAPI worker, it soaks up a Stripe webhook retry storm and delivers each event exactly once, at the worker's own pace.",
     },
     stack: ["Rust", "axum", "Redis", "HMAC", "Docker"],
     github: "https://github.com/Pissinatti-py/webhook-ingester",

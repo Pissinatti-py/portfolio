@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { personal } from '@/data/personal'
-import { t, tr } from '@/i18n'
+import { t, toggleLocale, tr, tSwitchLanguage } from '@/i18n'
 import { openPalette } from '@/composables/useCommandPalette'
 import LanguageToggle from '@/components/layout/LanguageToggle.vue'
 import avatar from '@/assets/avatar.webp'
@@ -15,6 +15,39 @@ const links = [
 ] as const
 
 const activeSection = ref('')
+
+function goToSection(id: string) {
+  const el = document.getElementById(id)
+  if (!el) return
+  history.replaceState(null, '', `#${id}`)
+  el.scrollIntoView({ behavior: 'smooth' })
+}
+
+// Suggested commands rotated one-at-a-time under the ⌘K button.
+// computed so labels follow the active locale.
+const suggestions = computed(() => [
+  { label: t('nav.about'), run: () => goToSection('sobre') },
+  { label: t('nav.projects'), run: () => goToSection('projetos') },
+  { label: t('nav.skills'), run: () => goToSection('skills') },
+  { label: t('nav.experience'), run: () => goToSection('experiencia') },
+  { label: t('nav.contact'), run: () => goToSection('contato') },
+  { label: tSwitchLanguage(), run: () => toggleLocale() },
+  { label: t('palette.social.github'), run: () => window.open(personal.github, '_blank', 'noopener') },
+])
+
+const suggestIndex = ref(0)
+let suggestTimer: ReturnType<typeof setInterval> | undefined
+const currentSuggestion = computed(
+  () => suggestions.value[suggestIndex.value % suggestions.value.length],
+)
+
+// Clicking a suggestion briefly fills the ⌘K button with its label, then runs it.
+const pressedLabel = ref<string | null>(null)
+function runSuggestion(s: { label: string; run: () => void }) {
+  pressedLabel.value = s.label
+  s.run()
+  setTimeout(() => (pressedLabel.value = null), 1200)
+}
 
 function onScroll() {
   const sections = ['sobre', 'projetos', 'skills', 'experiencia', 'contato']
@@ -30,8 +63,12 @@ function onScroll() {
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
   onScroll()
+  suggestTimer = setInterval(() => (suggestIndex.value += 1), 3500)
 })
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+  clearInterval(suggestTimer)
+})
 </script>
 
 <template>
@@ -107,14 +144,33 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
         class="flex w-full items-center justify-between gap-2 rounded-lg border border-[#27272a] bg-[#18181c] px-3 py-2 text-sm text-[#71717a] transition-colors hover:border-[#a855f7]/40 hover:text-[#a1a1aa]"
         @click="openPalette()"
       >
-        <span class="flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <span class="flex items-center gap-2 truncate" :class="pressedLabel ? 'text-[#c084fc]' : ''">
+          <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
           </svg>
-          {{ t('palette.hint') }}
+          <span class="truncate">{{ pressedLabel ?? t('palette.hint') }}</span>
         </span>
         <kbd class="font-mono text-[10px] text-[#52525b]">⌘K</kbd>
       </button>
+
+      <!-- Suggested commands, rotated one at a time -->
+      <div class="space-y-2">
+        <p class="px-1 font-mono text-[10px] uppercase tracking-widest text-[#52525b]">
+          {{ t('palette.suggestions') }}
+        </p>
+        <div class="relative h-8">
+          <Transition name="suggest" mode="out-in">
+            <button
+              :key="currentSuggestion.label"
+              type="button"
+              class="absolute inset-x-0 px-1 text-left text-xs text-[#71717a] transition-colors hover:text-[#c084fc]"
+              @click="runSuggestion(currentSuggestion)"
+            >
+              {{ currentSuggestion.label }}
+            </button>
+          </Transition>
+        </div>
+      </div>
     </div>
 
     <div class="space-y-5">
@@ -157,3 +213,18 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
     </div>
   </aside>
 </template>
+
+<style scoped>
+.suggest-enter-active,
+.suggest-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.suggest-enter-from {
+  opacity: 0;
+  transform: translateX(10px);
+}
+.suggest-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+</style>

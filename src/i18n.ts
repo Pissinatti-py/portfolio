@@ -79,6 +79,7 @@ const dict = {
   'palette.social.linkedin': { pt: 'Abrir LinkedIn', en: 'Open LinkedIn' },
   'palette.social.email': { pt: 'Enviar e-mail', en: 'Send email' },
   'palette.hint': { pt: 'para comandos', en: 'for commands' },
+  'palette.suggestions': { pt: 'Sugestões de comando:', en: 'Command suggestions:' },
 } as const
 
 export type I18nKey = keyof typeof dict
