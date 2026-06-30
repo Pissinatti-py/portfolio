@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { personal } from '@/data/personal'
 import { t } from '@/i18n'
+import { vMagnetic } from '@/composables/useMagnetic'
 import RevealBlock from '@/components/ui/RevealBlock.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 </script>
@@ -20,8 +21,11 @@ import SectionHeading from '@/components/ui/SectionHeading.vue'
 
       <RevealBlock :delay="200">
         <a
-          :href="`mailto:${personal.email}`"
-          class="group inline-flex items-center gap-3 px-7 py-3.5 border border-[#a855f7]/50 rounded-lg text-[#a855f7] hover:bg-[#a855f7] hover:text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/20 font-medium"
+          v-magnetic
+          :href="personal.emailUrl"
+          target="_blank"
+          rel="noopener"
+          class="group inline-flex items-center gap-3 px-7 py-3.5 border border-[#a855f7]/50 rounded-lg text-[#a855f7] hover:bg-[#a855f7] hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 font-medium"
         >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

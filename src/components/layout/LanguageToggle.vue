@@ -2,28 +2,30 @@
 import { locale, setLocale } from '@/i18n'
 
 const options = [
-  { code: 'pt' as const, flag: '🇧🇷', label: 'Português' },
-  { code: 'en' as const, flag: '🇺🇸', label: 'English' },
+  { value: 'pt' as const, label: 'PT', flag: '🇧🇷' },
+  { value: 'en' as const, label: 'EN', flag: '🇺🇸' },
 ]
 </script>
 
 <template>
-  <div class="flex items-center gap-1 rounded-lg border border-[#27272a] bg-[#18181c]/60 p-0.5">
+  <div
+    class="inline-flex items-center gap-0.5 p-0.5 rounded-lg border border-[#27272a] bg-[#18181c]"
+  >
     <button
       v-for="opt in options"
-      :key="opt.code"
+      :key="opt.value"
       type="button"
-      :aria-label="opt.label"
-      :aria-pressed="locale === opt.code"
-      class="px-2 py-1 rounded-md text-base leading-none transition-all duration-200"
+      class="flex items-center gap-1.5 px-2 py-1 rounded-md font-mono text-xs transition-colors duration-200"
       :class="
-        locale === opt.code
-          ? 'bg-[#a855f7]/20 ring-1 ring-[#a855f7]/50 opacity-100'
-          : 'opacity-50 grayscale hover:opacity-90 hover:grayscale-0'
+        locale === opt.value
+          ? 'bg-[#222228] text-white'
+          : 'text-[#52525b] hover:text-[#a1a1aa]'
       "
-      @click="setLocale(opt.code)"
+      :aria-pressed="locale === opt.value"
+      @click="setLocale(opt.value)"
     >
-      {{ opt.flag }}
+      <span aria-hidden="true">{{ opt.flag }}</span>
+      {{ opt.label }}
     </button>
   </div>
 </template>

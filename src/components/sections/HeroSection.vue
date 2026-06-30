@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { personal } from '@/data/personal'
 import { t, tr } from '@/i18n'
+import { vMagnetic } from '@/composables/useMagnetic'
 import { useTypewriter } from '@/composables/useTypewriter'
 
 const { displayed: typedName, done: nameDone } = useTypewriter(personal.name, 55, 300)
@@ -64,24 +65,27 @@ onMounted(() => {
       <Transition name="fade-up">
         <div v-if="showLinks" class="flex items-center gap-4 flex-wrap">
           <a
+            v-magnetic
             href="#projetos"
-            class="px-5 py-2.5 bg-[#a855f7] hover:bg-[#9333ea] text-white text-sm font-medium rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-purple-500/20"
+            class="px-5 py-2.5 bg-[#a855f7] hover:bg-[#9333ea] text-white text-sm font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/20"
           >
             {{ t('hero.cta') }}
           </a>
           <a
+            v-magnetic
             :href="personal.github"
             target="_blank"
             rel="noopener"
-            class="px-5 py-2.5 border border-[#27272a] hover:border-[#a855f7] text-[#a1a1aa] hover:text-white text-sm font-medium rounded-lg transition-all duration-200 hover:-translate-y-0.5"
+            class="px-5 py-2.5 border border-[#27272a] hover:border-[#a855f7] text-[#a1a1aa] hover:text-white text-sm font-medium rounded-lg transition-all duration-200"
           >
             GitHub
           </a>
           <a
+            v-magnetic
             :href="personal.linkedin"
             target="_blank"
             rel="noopener"
-            class="px-5 py-2.5 border border-[#27272a] hover:border-[#a855f7] text-[#a1a1aa] hover:text-white text-sm font-medium rounded-lg transition-all duration-200 hover:-translate-y-0.5"
+            class="px-5 py-2.5 border border-[#27272a] hover:border-[#a855f7] text-[#a1a1aa] hover:text-white text-sm font-medium rounded-lg transition-all duration-200"
           >
             LinkedIn
           </a>
