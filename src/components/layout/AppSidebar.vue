@@ -142,7 +142,9 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
           </svg>
         </a>
         <a
-          :href="`mailto:${personal.email}`"
+          :href="personal.emailUrl"
+          target="_blank"
+          rel="noopener"
           class="text-[#52525b] transition-colors hover:text-[#a855f7]"
           aria-label="Email"
         >
