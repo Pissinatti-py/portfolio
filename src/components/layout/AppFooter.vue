@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { personal } from '@/data/personal'
+import { t } from '@/i18n'
 </script>
 
 <template>
@@ -9,7 +10,7 @@ import { personal } from '@/data/personal'
         &copy; {{ new Date().getFullYear() }} {{ personal.name }}
       </p>
       <p class="text-[#3f3f46] text-sm">
-        Feito com Vue 3 + Tailwind CSS
+        {{ t('footer.madeWith') }}
       </p>
     </div>
   </footer>
