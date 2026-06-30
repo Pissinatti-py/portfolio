@@ -44,7 +44,7 @@ const commands = computed<Command[]>(() => {
     { id: 'lang', label: tSwitchLanguage(), group: actions, run: () => toggleLocale() },
     { id: 'github', label: t('palette.social.github'), group: actions, run: () => openExternal(personal.github) },
     { id: 'linkedin', label: t('palette.social.linkedin'), group: actions, run: () => openExternal(personal.linkedin) },
-    { id: 'email', label: t('palette.social.email'), group: actions, run: () => openExternal(`mailto:${personal.email}`) },
+    { id: 'email', label: t('palette.social.email'), group: actions, run: () => openExternal(personal.emailUrl) },
   ]
 })
 

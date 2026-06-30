@@ -23,7 +23,9 @@ import avatar from '@/assets/avatar.webp'
         </p>
         <div class="pt-2">
           <a
-            :href="`mailto:${personal.email}`"
+            :href="personal.emailUrl"
+            target="_blank"
+            rel="noopener"
             class="inline-flex items-center gap-2 font-mono text-sm text-[#a855f7] hover:text-[#c084fc] transition-colors group"
           >
             {{ personal.email }}

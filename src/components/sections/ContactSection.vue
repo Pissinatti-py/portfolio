@@ -22,7 +22,9 @@ import SectionHeading from '@/components/ui/SectionHeading.vue'
       <RevealBlock :delay="200">
         <a
           v-magnetic
-          :href="`mailto:${personal.email}`"
+          :href="personal.emailUrl"
+          target="_blank"
+          rel="noopener"
           class="group inline-flex items-center gap-3 px-7 py-3.5 border border-[#a855f7]/50 rounded-lg text-[#a855f7] hover:bg-[#a855f7] hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 font-medium"
         >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -12,6 +12,17 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 8,
+    name: { pt: "Portfólio", en: "Portfolio" },
+    description: {
+      pt: "Este portfólio: SPA em Vue 3 + TypeScript com Vite e Tailwind CSS v4. Navegação por sidebar, command palette (⌘K), i18n bilíngue (pt/en) e micro-interações próprias — efeitos magnético, tilt 3D, typewriter e reveal ao rolar.",
+      en: "This portfolio: a Vue 3 + TypeScript SPA built with Vite and Tailwind CSS v4. Sidebar navigation, a command palette (⌘K), bilingual i18n (pt/en) and custom micro-interactions — magnetic, 3D tilt, typewriter and scroll-reveal effects.",
+    },
+    stack: ["Vue 3", "TypeScript", "Vite", "Tailwind CSS"],
+    github: "https://github.com/Pissinatti-py/portfolio",
+    featured: true,
+  },
+  {
     id: 2,
     name: { pt: "FastAPI Boilerplate", en: "FastAPI Boilerplate" },
     description: {
