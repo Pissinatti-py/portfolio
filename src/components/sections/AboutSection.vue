@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { personal } from '@/data/personal'
+import { t, tr } from '@/i18n'
 import RevealBlock from '@/components/ui/RevealBlock.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 import avatar from '@/assets/avatar.webp'
@@ -8,13 +9,13 @@ import avatar from '@/assets/avatar.webp'
 <template>
   <section id="sobre" class="py-28 max-w-5xl mx-auto px-6">
     <RevealBlock>
-      <SectionHeading label="01. sobre" title="Sobre mim" />
+      <SectionHeading :label="t('section.about.label')" :title="t('section.about.title')" />
     </RevealBlock>
 
     <div class="grid md:grid-cols-5 gap-12 items-start">
       <RevealBlock :delay="100" class="md:col-span-3 space-y-4">
         <p
-          v-for="(paragraph, i) in personal.about.split('\n')"
+          v-for="(paragraph, i) in tr(personal.about).split('\n')"
           :key="i"
           class="text-[#a1a1aa] leading-relaxed text-base"
         >
