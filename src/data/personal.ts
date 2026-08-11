@@ -21,7 +21,7 @@ From the database to the front, my focus is efficiency. I don't just write code;
   location: { pt: "Brasil", en: "Brazil" } as I18nString,
   email: "marcusandrade.37@gmail.com",
   emailUrl: "https://mail.google.com/mail/?view=cm&fs=1&to=marcusandrade.37@gmail.com",
-  github: "https://github.com/Chuckpy",
+  github: "https://github.com/Pissinatti-py",
   linkedin: "https://www.linkedin.com/in/marcusviniciusfonsecap",
   instagram: "https://www.instagram.com/marcusvpissinatti",
 };
