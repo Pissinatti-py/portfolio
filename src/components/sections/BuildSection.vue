@@ -58,7 +58,7 @@ const cards: {
           />
 
           <div class="relative flex flex-1 flex-col p-6">
-            <span class="font-mono text-xs text-primary/70">{{ card.n }}</span>
+            <span class="font-mono text-xs text-primary-light/70">{{ card.n }}</span>
             <h3 class="mt-2 text-lg font-semibold text-text">{{ t(card.title) }}</h3>
             <p class="mt-3 flex-1 text-sm leading-relaxed text-text-muted">{{ t(card.body) }}</p>
 

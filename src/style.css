@@ -4,9 +4,12 @@
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  --color-primary: #a855f7;
-  --color-primary-light: #c084fc;
-  --color-primary-dark: #9333ea;
+  /* Purple and dark blue are a pair, not a colour and an accent. Each has a
+     light tint because the dark tones sit at 3.4:1 and 2.9:1 on the surface —
+     fine for fills, below AA for text. Anything small uses the -light token. */
+  --color-primary: #7c3aed;
+  --color-primary-light: #a78bfa;
+  --color-primary-dark: #5b21b6;
 
   --color-surface: #0f0f11;
   --color-surface-1: #18181c;
@@ -20,11 +23,9 @@
   --color-text-subtle: #3f3f46;
   --color-border: #27272a;
 
-  /* Secondary accent: navy blue. Purple carries every action and highlight;
-     navy carries depth — glows, gradients, the cool half of the cover art. */
-  --color-accent: #4361ee;
-  --color-accent-light: #7b93ff;
-  --color-accent-deep: #1b2a6b;
+  --color-accent: #1d4ed8;
+  --color-accent-light: #60a5fa;
+  --color-accent-deep: #172554;
 }
 
 html {

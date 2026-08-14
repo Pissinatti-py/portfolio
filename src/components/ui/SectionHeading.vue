@@ -26,8 +26,8 @@ const rest = computed(() => props.label.replace(/^\d+\s*—\s*/, ''))
     </Parallax>
 
     <RevealBlock class="relative">
-      <p class="flex items-center gap-3 font-mono text-xs tracking-[0.2em] text-primary uppercase">
-        <span class="h-px w-8 bg-primary/50" />
+      <p class="flex items-center gap-3 font-mono text-xs tracking-[0.2em] text-primary-light uppercase">
+        <span class="h-px w-10 bg-gradient-to-r from-primary-light to-accent-light" />
         {{ rest }}
       </p>
       <h2 class="mt-4 max-w-2xl text-3xl font-bold tracking-tight text-text sm:text-4xl">

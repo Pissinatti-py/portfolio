@@ -76,11 +76,11 @@ const isMac = computed(
         @click.prevent="go('top')"
       >
         <span
-          class="grid h-7 w-7 place-items-center rounded-md border border-primary/40 bg-primary/10 text-[11px] text-primary transition-colors group-hover:bg-primary/20"
+          class="grid h-7 w-7 place-items-center rounded-md border border-primary/40 bg-gradient-to-br from-primary/25 to-accent/25 text-[11px] text-primary-light transition-[filter] group-hover:brightness-150"
         >
           {{ personal.initials }}
         </span>
-        <span class="hidden text-text sm:inline">marcus<span class="text-primary">.</span></span>
+        <span class="hidden text-text sm:inline">marcus<span class="text-primary-light">.</span></span>
       </a>
 
       <ul class="ml-auto hidden items-center gap-1 md:flex">
@@ -133,7 +133,7 @@ const isMac = computed(
           <a
             :href="`#${sec.id}`"
             class="flex items-center justify-between py-3 text-base"
-            :class="active === sec.id ? 'text-primary' : 'text-text-body'"
+            :class="active === sec.id ? 'text-primary-light' : 'text-text-body'"
             @click.prevent="go(sec.id)"
           >
             {{ t(sec.key) }}

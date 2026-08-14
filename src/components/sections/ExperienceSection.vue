@@ -13,7 +13,7 @@ import Parallax from '@/components/ui/Parallax.vue'
     <ol class="relative">
       <!-- The spine, fading out at both ends. -->
       <span
-        class="absolute top-2 bottom-2 left-0 w-px bg-gradient-to-b from-transparent via-border to-transparent lg:left-[9.5rem]"
+        class="absolute top-2 bottom-2 left-0 w-px bg-[linear-gradient(to_bottom,transparent,var(--color-primary)_22%,var(--color-accent)_78%,transparent)] lg:left-[9.5rem]"
         aria-hidden="true"
       />
 
@@ -31,7 +31,7 @@ import Parallax from '@/components/ui/Parallax.vue'
                 aria-hidden="true"
               />
 
-              <p class="font-mono text-xs tracking-wide text-primary">{{ tr(job.period) }}</p>
+              <p class="font-mono text-xs tracking-wide text-primary-light">{{ tr(job.period) }}</p>
               <h3 class="mt-2 text-xl font-semibold text-text">
                 {{ tr(job.role) }}
                 <span class="text-text-dim">·</span>

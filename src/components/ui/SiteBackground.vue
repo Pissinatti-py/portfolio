@@ -38,7 +38,13 @@ const wrap = (v: number, m: number) => ((v % m) + m) % m
 
 let stop: (() => void) | undefined
 let onMove: ((e: MouseEvent) => void) | undefined
-let frameId = 0
+let loopId = 0
+
+/** How fast each thing chases the pointer, per frame. The layers lag on
+ *  purpose — that weight is what sells the depth. The light does not: a
+ *  spotlight that trails behind the cursor reads as lag, not as craft. */
+const LAYER_EASE = 0.08
+const SPOT_EASE = 0.2
 
 onMounted(() => {
   if (prefersReducedMotion() || !root.value) return
@@ -52,26 +58,66 @@ onMounted(() => {
     // whatever the page ends up measuring.
     node.style.setProperty('--p', max > 0 ? String(Math.min(1, y / max)) : '0')
 
+    node.style.setProperty('--gf', String(-wrap(y * 0.03, 128)))
     node.style.setProperty('--gy', String(-wrap(y * 0.06, 64)))
     node.style.setProperty('--n1', String(-wrap(y * 0.1, 140)))
     node.style.setProperty('--n2', String(-wrap(y * 0.22, 92)))
   })
 
+  // Pointer state: a target set by the event, and a value that chases it.
+  // Seeded at the viewport centre so a touch device — which never fires
+  // mousemove — still gets the grid lit somewhere sensible.
+  let tx = 0
+  let ty = 0
+  let tpx = window.innerWidth / 2
+  let tpy = window.innerHeight / 2
+  let cx = 0
+  let cy = 0
+  let cpx = tpx
+  let cpy = tpy
+
+  function tick() {
+    cx += (tx - cx) * LAYER_EASE
+    cy += (ty - cy) * LAYER_EASE
+    cpx += (tpx - cpx) * SPOT_EASE
+    cpy += (tpy - cpy) * SPOT_EASE
+
+    node.style.setProperty('--mx', cx.toFixed(4))
+    node.style.setProperty('--my', cy.toFixed(4))
+    node.style.setProperty('--px', cpx.toFixed(1))
+    node.style.setProperty('--py', cpy.toFixed(1))
+
+    // Self-terminating: once it has caught up there is nothing to animate,
+    // so the loop costs nothing at rest.
+    const settled =
+      Math.abs(tx - cx) < 0.0004 &&
+      Math.abs(ty - cy) < 0.0004 &&
+      Math.abs(tpx - cpx) < 0.4 &&
+      Math.abs(tpy - cpy) < 0.4
+
+    loopId = settled ? 0 : requestAnimationFrame(tick)
+  }
+
   onMove = (e: MouseEvent) => {
-    if (frameId) return
-    frameId = requestAnimationFrame(() => {
-      frameId = 0
-      node.style.setProperty('--mx', (e.clientX / window.innerWidth - 0.5).toFixed(3))
-      node.style.setProperty('--my', (e.clientY / window.innerHeight - 0.5).toFixed(3))
-    })
+    tx = e.clientX / window.innerWidth - 0.5
+    ty = e.clientY / window.innerHeight - 0.5
+    tpx = e.clientX
+    tpy = e.clientY
+    // Always re-request rather than guarding on loopId: a frame requested while
+    // the tab was hidden stays pending, and a `if (!loopId)` guard would then
+    // refuse to restart the loop until it finally fired.
+    if (loopId) cancelAnimationFrame(loopId)
+    loopId = requestAnimationFrame(tick)
   }
   window.addEventListener('mousemove', onMove, { passive: true })
+
+  tick() // seed the custom properties before the first pointer event
 })
 
 onUnmounted(() => {
   stop?.()
   if (onMove) window.removeEventListener('mousemove', onMove)
-  if (frameId) cancelAnimationFrame(frameId)
+  if (loopId) cancelAnimationFrame(loopId)
 })
 </script>
 
@@ -85,16 +131,26 @@ onUnmounted(() => {
       <span class="blob blob-c" />
     </div>
 
-    <!-- 2 — blueprint grid. Vignette lives on the wrapper so it stays put
-         relative to the viewport while the tile underneath scrolls. -->
+    <!-- 2 — blueprint grid on two planes. Vignette lives on the wrapper so it
+         stays put relative to the viewport while the tiles underneath scroll. -->
     <div class="vignette">
-      <div class="grid-layer blueprint" data-parallax />
+      <div class="grid-far" data-parallax />
+      <div class="grid-base blueprint" data-parallax />
     </div>
 
     <!-- 3 — node field, two densities at two depths. -->
     <div class="vignette">
       <div class="nodes nodes-far" data-parallax />
       <div class="nodes nodes-near" data-parallax />
+    </div>
+
+    <!-- 4 — the lit plane. Same tiles as above at the same rates, drawn bold
+         and glowing, revealed only inside a circle that follows the cursor.
+         The mask sits on the wrapper and the parallax on the tiles, so the
+         light stays under the pointer while the grid scrolls beneath it. -->
+    <div class="spot">
+      <div class="grid-hot" data-parallax />
+      <div class="nodes-hot" data-parallax />
     </div>
 
     <!-- 4 — signal traces: a dim wire, and a packet running along it. -->
@@ -130,6 +186,9 @@ onUnmounted(() => {
   --p: 0;
   --mx: 0;
   --my: 0;
+  --px: 0;
+  --py: 0;
+  --gf: 0;
   --gy: 0;
   --n1: 0;
   --n2: 0;
@@ -152,8 +211,8 @@ onUnmounted(() => {
   height: 200vh;
   will-change: transform;
   transform: translate3d(
-    calc(var(--mx) * 26px),
-    calc(var(--p) * -100vh + var(--my) * 26px),
+    calc(var(--mx) * 70px),
+    calc(var(--p) * -100vh + var(--my) * 70px),
     0
   );
 }
@@ -195,15 +254,94 @@ onUnmounted(() => {
   opacity: 0.18;
 }
 
-/* --- 2. blueprint grid --------------------------------------------------- */
+/* --- 2. blueprint grid, two planes --------------------------------------- */
 
-.grid-layer {
+.grid-far,
+.grid-base,
+.grid-hot {
   position: absolute;
   inset: -160px;
   will-change: transform;
+}
+
+/* Coarser, dimmer, slower — the plane behind the working grid. */
+.grid-far {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-border) 55%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 55%, transparent) 1px, transparent 1px);
+  background-size: 128px 128px;
   transform: translate3d(
-    calc(var(--mx) * -12px),
-    calc(var(--gy) * 1px + var(--my) * -12px),
+    calc(var(--mx) * -14px),
+    calc(var(--gf) * 1px + var(--my) * -14px),
+    0
+  );
+}
+
+.grid-base {
+  transform: translate3d(
+    calc(var(--mx) * -30px),
+    calc(var(--gy) * 1px + var(--my) * -30px),
+    0
+  );
+}
+
+/* The lit grid. Its transform must match .grid-base exactly, or the glowing
+   lines drift off the lines they are supposed to be lighting.
+
+   The halo is baked into the gradient — a 1px core falling off over 8px —
+   rather than done with filter: blur(), which would repaint a full-viewport
+   layer every time the pointer moves. Verticals carry the purple, horizontals
+   the blue, so the two tones are woven through the grid itself. */
+.grid-hot {
+  background-image:
+    linear-gradient(
+      to right,
+      transparent 0,
+      color-mix(in srgb, var(--color-primary-light) 85%, transparent) 1px,
+      color-mix(in srgb, var(--color-primary) 32%, transparent) 3px,
+      transparent 8px
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      color-mix(in srgb, var(--color-accent-light) 85%, transparent) 1px,
+      color-mix(in srgb, var(--color-accent) 32%, transparent) 3px,
+      transparent 8px
+    );
+  background-size: 64px 64px;
+  transform: translate3d(
+    calc(var(--mx) * -30px),
+    calc(var(--gy) * 1px + var(--my) * -30px),
+    0
+  );
+}
+
+/* Circle of light that follows the cursor. */
+.spot {
+  position: absolute;
+  inset: 0;
+  mask-image: radial-gradient(
+    circle 340px at calc(var(--px) * 1px) calc(var(--py) * 1px),
+    #000 0%,
+    rgba(0, 0, 0, 0.72) 34%,
+    transparent 72%
+  );
+}
+
+.nodes-hot {
+  position: absolute;
+  inset: -160px;
+  will-change: transform;
+  background-image: radial-gradient(
+    circle at center,
+    var(--color-primary-light) 1.4px,
+    transparent 2.4px
+  );
+  background-size: 92px 92px;
+  /* Must match .nodes-near, for the same reason .grid-hot matches .grid-base. */
+  transform: translate3d(
+    calc(var(--mx) * -85px),
+    calc(var(--n2) * 1px + var(--my) * -85px),
     0
   );
 }
@@ -225,8 +363,8 @@ onUnmounted(() => {
   background-size: 140px 140px;
   opacity: 0.55;
   transform: translate3d(
-    calc(var(--mx) * -18px),
-    calc(var(--n1) * 1px + var(--my) * -18px),
+    calc(var(--mx) * -45px),
+    calc(var(--n1) * 1px + var(--my) * -45px),
     0
   );
 }
@@ -235,8 +373,8 @@ onUnmounted(() => {
   background-size: 92px 92px;
   opacity: 0.3;
   transform: translate3d(
-    calc(var(--mx) * -34px),
-    calc(var(--n2) * 1px + var(--my) * -34px),
+    calc(var(--mx) * -85px),
+    calc(var(--n2) * 1px + var(--my) * -85px),
     0
   );
 }
@@ -287,6 +425,11 @@ onUnmounted(() => {
   .packet {
     animation: none;
     opacity: 0.12;
+  }
+
+  /* No pointer loop runs, so the light would be frozen wherever it seeded. */
+  .spot {
+    display: none;
   }
 }
 </style>

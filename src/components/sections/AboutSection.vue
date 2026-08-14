@@ -36,7 +36,7 @@ const accounts = [
               rel="noopener noreferrer"
               class="group inline-flex items-center gap-2.5 rounded-xl border border-border bg-surface-1/60 px-4 py-3 transition-colors hover:border-primary/45"
             >
-              <Icon name="github" :size="18" class="text-text-muted transition-colors group-hover:text-primary" />
+              <Icon name="github" :size="18" class="text-text-muted transition-colors group-hover:text-primary-light" />
               <span class="text-left">
                 <span class="block font-mono text-sm text-text">{{ acc.handle }}</span>
                 <span class="block font-mono text-[10px] tracking-wider text-text-dim uppercase">

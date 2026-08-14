@@ -30,7 +30,7 @@ const links: { icon: IconName; label: string; url: string }[] = [
             :href="personal.emailUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="group inline-flex items-center gap-3 rounded-full bg-primary px-7 py-4 font-medium text-white transition-colors hover:bg-primary-light"
+            class="group inline-flex items-center gap-3 rounded-full bg-gradient-to-br from-primary to-accent px-7 py-4 font-medium text-white transition-[filter,box-shadow] duration-300 hover:brightness-110 hover:shadow-[0_0_36px_-6px_var(--color-primary)]"
           >
             <Icon name="mail" :size="18" />
             {{ t('contact.email') }}
@@ -46,7 +46,7 @@ const links: { icon: IconName; label: string; url: string }[] = [
             :href="personal.emailUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="font-mono text-sm text-text-muted transition-colors hover:text-primary"
+            class="font-mono text-sm text-text-muted transition-colors hover:text-primary-light"
           >
             {{ personal.email }}
           </a>
@@ -56,7 +56,7 @@ const links: { icon: IconName; label: string; url: string }[] = [
             :href="link.url"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 font-mono text-sm text-text-muted transition-colors hover:text-primary"
+            class="inline-flex items-center gap-2 font-mono text-sm text-text-muted transition-colors hover:text-primary-light"
           >
             <Icon :name="link.icon" :size="15" />
             {{ link.label }}

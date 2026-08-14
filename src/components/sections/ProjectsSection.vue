@@ -36,7 +36,7 @@ function toggleTag(tag: Tag | null) {
         class="rounded-full border px-3.5 py-1.5 font-mono text-xs transition-colors"
         :class="
           activeTag === null
-            ? 'border-primary/50 bg-primary/10 text-primary'
+            ? 'border-primary/50 bg-primary/10 text-primary-light'
             : 'border-border text-text-dim hover:border-text-subtle hover:text-text-body'
         "
         @click="toggleTag(null)"
@@ -50,7 +50,7 @@ function toggleTag(tag: Tag | null) {
         class="rounded-full border px-3.5 py-1.5 font-mono text-xs transition-colors"
         :class="
           activeTag === tag
-            ? 'border-primary/50 bg-primary/10 text-primary'
+            ? 'border-primary/50 bg-primary/10 text-primary-light'
             : 'border-border text-text-dim hover:border-text-subtle hover:text-text-body'
         "
         @click="toggleTag(tag)"
@@ -73,7 +73,7 @@ function toggleTag(tag: Tag | null) {
         :href="project.github"
         :target="project.github ? '_blank' : undefined"
         :rel="project.github ? 'noopener noreferrer' : undefined"
-        class="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface-1/70 transition-[border-color,box-shadow] duration-300 hover:border-primary/45 hover:shadow-[0_0_45px_-15px] hover:shadow-primary/40"
+        class="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface-1/70 transition-[border-color,box-shadow] duration-300 hover:border-primary-light/40 hover:shadow-[0_0_50px_-14px_var(--color-primary),0_14px_44px_-22px_var(--color-accent)]"
         :class="i === 0 && !activeTag ? 'lg:col-span-2' : ''"
       >
         <!-- Cover art drifts a little against the card frame while scrolling. -->
@@ -106,7 +106,7 @@ function toggleTag(tag: Tag | null) {
               v-if="project.github"
               name="external"
               :size="13"
-              class="text-text-subtle transition-all group-hover:translate-x-0.5 group-hover:text-primary"
+              class="text-text-subtle transition-all group-hover:translate-x-0.5 group-hover:text-primary-light"
             />
           </h3>
 

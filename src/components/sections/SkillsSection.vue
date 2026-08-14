@@ -22,7 +22,7 @@ import RevealBlock from '@/components/ui/RevealBlock.vue'
             :key="group.category.en"
             class="group bg-surface p-6 transition-colors duration-300 hover:bg-surface-1"
           >
-            <p class="flex items-baseline gap-2 font-mono text-[11px] tracking-widest text-primary uppercase">
+            <p class="flex items-baseline gap-2 font-mono text-[11px] tracking-widest text-primary-light uppercase">
               <span class="text-text-subtle">{{ String(i + 1).padStart(2, '0') }}</span>
               {{ tr(group.category) }}
             </p>

@@ -20,7 +20,7 @@ const year = new Date().getFullYear()
   <footer class="relative overflow-hidden border-t border-border">
     <Parallax :speed="0.3" class="pointer-events-none absolute inset-x-0 -bottom-6 select-none">
       <pre
-        class="overflow-hidden font-mono text-[10px] leading-[0.9] whitespace-pre text-primary/[0.08] sm:text-sm"
+        class="overflow-hidden font-mono text-[10px] leading-[0.9] whitespace-pre text-primary-light/[0.08] sm:text-sm"
         aria-hidden="true"
       >{{ band.join('\n') }}</pre>
     </Parallax>
@@ -34,7 +34,7 @@ const year = new Date().getFullYear()
         :href="personal.repo"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 font-mono text-xs text-text-dim transition-colors hover:text-primary sm:ml-auto"
+        class="inline-flex items-center gap-2 font-mono text-xs text-text-dim transition-colors hover:text-primary-light sm:ml-auto"
       >
         <Icon name="github" :size="13" />
         {{ t('footer.source') }}

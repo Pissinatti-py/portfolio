@@ -54,7 +54,7 @@ function go(id: string) {
         class="fade-up mt-2 text-5xl font-bold tracking-tighter text-text sm:text-7xl lg:text-8xl"
         style="animation-delay: 0.25s"
       >
-        {{ personal.name }}<span class="text-primary">.</span>
+        {{ personal.name }}<span class="text-primary-light">.</span>
       </h1>
 
       <!-- Reserved height so the cycling line never reflows the page. -->
@@ -79,7 +79,7 @@ function go(id: string) {
         <button
           v-magnetic
           type="button"
-          class="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-light"
+          class="group inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-primary to-accent px-6 py-3 text-sm font-semibold text-white transition-[filter,box-shadow] duration-300 hover:brightness-110 hover:shadow-[0_0_32px_-6px_var(--color-primary)]"
           @click="go('work')"
         >
           {{ t('hero.cta') }}
@@ -88,7 +88,7 @@ function go(id: string) {
         <button
           v-magnetic
           type="button"
-          class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium text-text-body transition-colors hover:border-primary/50 hover:text-text"
+          class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium text-text-body transition-colors hover:border-accent-light/50 hover:text-text"
           @click="go('contact')"
         >
           {{ t('hero.ctaAlt') }}

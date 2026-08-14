@@ -17,7 +17,7 @@ const options: Locale[] = ['en', 'pt']
       class="rounded-full px-2.5 py-1 uppercase transition-colors"
       :class="
         locale === l
-          ? 'bg-primary/15 text-primary'
+          ? 'bg-primary/15 text-primary-light'
           : 'text-text-dim hover:text-text-body'
       "
       :aria-pressed="locale === l"

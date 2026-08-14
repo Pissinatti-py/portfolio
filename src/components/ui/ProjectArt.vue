@@ -60,7 +60,7 @@ const wavePath = computed(() =>
 <template>
   <svg
     viewBox="0 0 320 160"
-    class="h-full w-full text-primary"
+    class="h-full w-full text-primary-light"
     preserveAspectRatio="xMidYMid slice"
     aria-hidden="true"
   >
