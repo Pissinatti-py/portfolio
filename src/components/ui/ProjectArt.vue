@@ -238,18 +238,21 @@ const wavePath = computed(() =>
 </template>
 
 <style scoped>
+.march {
+  animation: march 4s linear infinite;
+}
 .pulse {
+  animation: pulse 3.2s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
 
-/* Motion only on hover: at rest the art is a still drawing. Cards carry
-   `group`, so the whole tile is the trigger, not the SVG alone. */
+/* Cards carry `group`; hovering one tightens the ambient motion. */
 :global(.group:hover) .march {
-  animation: march 1.6s linear infinite;
+  animation-duration: 1.2s;
 }
 :global(.group:hover) .pulse {
-  animation: pulse 1.8s ease-in-out infinite;
+  animation-duration: 1.4s;
 }
 
 @keyframes march {
@@ -271,8 +274,8 @@ const wavePath = computed(() =>
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :global(.group:hover) .march,
-  :global(.group:hover) .pulse {
+  .march,
+  .pulse {
     animation: none;
   }
 }
