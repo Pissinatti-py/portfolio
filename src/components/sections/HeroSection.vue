@@ -103,8 +103,8 @@ function go(id: string) {
         class="fade-up mt-16 flex flex-wrap gap-x-12 gap-y-6 border-t border-border pt-8"
         style="animation-delay: 0.7s"
       >
-        <div v-for="stat in stats" :key="stat.value">
-          <dt class="font-mono text-3xl font-bold text-text">{{ stat.value }}</dt>
+        <div v-for="stat in stats" :key="stat.id">
+          <dt class="font-mono text-3xl font-bold text-text">{{ tr(stat.value) }}</dt>
           <dd class="mt-1 font-mono text-[11px] tracking-wider text-text-dim uppercase">
             {{ tr(stat.label) }}
           </dd>

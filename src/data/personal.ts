@@ -45,9 +45,23 @@ I'm Marcus. Old friends — and my first GitHub account — call me Chuck.`,
   repo: 'https://github.com/Pissinatti-py/portfolio',
 }
 
-/** Short proof points shown under the hero. */
-export const stats: { value: string; label: I18nString }[] = [
-  { value: '6+', label: { pt: 'anos em produção', en: 'years in production' } },
-  { value: '20+', label: { pt: 'repositórios públicos', en: 'public repositories' } },
-  { value: 'Py · TS · Rust', label: { pt: 'stack principal', en: 'core stack' } },
+/** Short proof points shown under the hero. Every one has to be checkable from
+ *  the page itself — the third points at finance-ai-assistant and
+ *  market-insights-service, both linked in the work grid. */
+export const stats: { id: string; value: I18nString; label: I18nString }[] = [
+  {
+    id: 'years',
+    value: { pt: '6+', en: '6+' },
+    label: { pt: 'anos em produção', en: 'years in production' },
+  },
+  {
+    id: 'repos',
+    value: { pt: '20+', en: '20+' },
+    label: { pt: 'repositórios públicos', en: 'public repositories' },
+  },
+  {
+    id: 'ai',
+    value: { pt: 'Agentes + RAG', en: 'Agents + RAG' },
+    label: { pt: 'entregue, não demo', en: 'shipped, not demoed' },
+  },
 ]
