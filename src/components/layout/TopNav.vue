@@ -69,7 +69,7 @@ const isMac = computed(
       :style="{ transform: `scaleX(${progress})` }"
     />
 
-    <nav class="mx-auto flex h-16 max-w-6xl items-center gap-4 px-5 sm:px-8">
+    <nav class="mx-auto flex h-16 max-w-page items-center gap-4 px-5 sm:px-8">
       <a
         href="#top"
         class="group flex items-center gap-2.5 font-mono text-sm font-semibold tracking-tight"

@@ -26,11 +26,16 @@ function go(id: string) {
 
 <template>
   <!-- Backdrop comes from SiteBackground.vue, which runs behind the whole page. -->
+  <!-- mb-24 is clearance, not spacing. SectionHeading hangs its oversized ghost
+       numeral 160px above its own heading (`sm:-top-40`), which is more than the
+       144px of top padding the next section has — so ~65px of a giant "01"
+       reached up past the hero's bottom edge and landed on the scroll cue. The
+       margin keeps the first viewport to the hero alone. -->
   <section
     id="top"
-    class="relative flex min-h-[100svh] items-center px-5 pt-24 pb-16 sm:px-8"
+    class="relative mb-24 flex min-h-[100svh] items-center px-5 pt-24 pb-16 sm:px-8"
   >
-    <div class="relative mx-auto w-full max-w-6xl">
+    <div class="relative mx-auto w-full max-w-page">
       <!-- Availability: stated plainly, once, and never mentioned again. -->
       <p
         class="fade-up inline-flex items-center gap-2.5 rounded-full border border-primary/25 bg-primary/[0.07] py-1.5 pr-4 pl-3 font-mono text-[11px] tracking-wide text-primary-light"

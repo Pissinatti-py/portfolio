@@ -26,7 +26,7 @@ const year = new Date().getFullYear()
     </Parallax>
 
     <div
-      class="relative mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:px-8"
+      class="relative mx-auto flex max-w-page flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:px-8"
     >
       <p class="font-mono text-xs text-text-dim">© {{ year }} {{ personal.name }}</p>
 

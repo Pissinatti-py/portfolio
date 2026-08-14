@@ -6,6 +6,7 @@ import { t, tr } from '@/i18n'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
 import RevealBlock from '@/components/ui/RevealBlock.vue'
 import Parallax from '@/components/ui/Parallax.vue'
+import PortraitFrame from '@/components/ui/PortraitFrame.vue'
 import Icon from '@/components/ui/Icon.vue'
 
 const paragraphs = computed(() => tr(personal.about).split('\n\n'))
@@ -17,7 +18,7 @@ const accounts = [
 </script>
 
 <template>
-  <section id="about" class="relative mx-auto max-w-6xl px-5 py-28 sm:px-8 sm:py-36">
+  <section id="about" class="relative mx-auto max-w-page px-5 py-28 sm:px-8 sm:py-36">
     <SectionHeading :label="t('section.about.label')" :title="t('section.about.title')" />
 
     <div class="grid gap-12 lg:grid-cols-[1fr_20rem] lg:gap-16">
@@ -48,24 +49,12 @@ const accounts = [
         </RevealBlock>
       </div>
 
-      <!-- Portrait rises slightly against the copy beside it. -->
+      <!-- Portrait rises slightly against the copy beside it. The scale-in here is
+           the section's own entrance; everything the portrait itself does is on
+           hover. -->
       <Parallax :speed="-0.1" class="order-1 lg:order-2">
         <RevealBlock direction="scale">
-          <div class="relative mx-auto w-56 sm:w-64 lg:w-full">
-            <span
-              class="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl border border-primary/50"
-              aria-hidden="true"
-            />
-            <img
-              :src="avatar"
-              :alt="personal.name"
-              width="320"
-              height="320"
-              loading="lazy"
-              decoding="async"
-              class="relative w-full rounded-2xl border border-border object-cover grayscale transition-[filter] duration-500 hover:grayscale-0"
-            />
-          </div>
+          <PortraitFrame :src="avatar" :alt="personal.name" />
         </RevealBlock>
       </Parallax>
     </div>

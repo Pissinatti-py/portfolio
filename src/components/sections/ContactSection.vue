@@ -16,7 +16,7 @@ const links: { icon: IconName; label: string; url: string }[] = [
 
 <template>
   <section id="contact" class="relative overflow-hidden px-5 py-28 sm:px-8 sm:py-36">
-    <div class="relative mx-auto max-w-6xl">
+    <div class="relative mx-auto max-w-page">
       <SectionHeading :label="t('section.contact.label')" :title="t('section.contact.title')" />
 
       <RevealBlock>

@@ -23,7 +23,7 @@ function toggleTag(tag: Tag | null) {
 </script>
 
 <template>
-  <section id="work" class="relative mx-auto max-w-6xl px-5 py-28 sm:px-8 sm:py-36">
+  <section id="work" class="relative mx-auto max-w-page px-5 py-28 sm:px-8 sm:py-36">
     <SectionHeading
       :label="t('section.work.label')"
       :title="t('section.work.title')"
@@ -73,7 +73,7 @@ function toggleTag(tag: Tag | null) {
         :href="project.github"
         :target="project.github ? '_blank' : undefined"
         :rel="project.github ? 'noopener noreferrer' : undefined"
-        class="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface-1/70 transition-[border-color,box-shadow] duration-300 hover:border-primary-light/40 hover:shadow-[0_0_50px_-14px_var(--color-primary),0_14px_44px_-22px_var(--color-accent)]"
+        class="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface-1/85 transition-[border-color,box-shadow] duration-300 hover:border-primary-light/40 hover:shadow-[0_0_50px_-14px_var(--color-primary),0_14px_44px_-22px_var(--color-accent)]"
         :class="i === 0 && !activeTag ? 'lg:col-span-2' : ''"
       >
         <!-- Cover art drifts a little against the card frame while scrolling. -->

@@ -167,6 +167,13 @@ export function tProjectsShowAll(n: number): string {
   return locale.value === 'pt' ? `Ver todos os ${n} projetos` : `View all ${n} projects`
 }
 
+/** Stack totals. Both numbers are counted from the data, never written down. */
+export function tStackCount(tools: number, areas: number): string {
+  return locale.value === 'pt'
+    ? `${tools} tecnologias · ${areas} áreas`
+    : `${tools} tools · ${areas} areas`
+}
+
 /** Label for the action that switches to the *other* language. */
 export function tSwitchLanguage(): string {
   return locale.value === 'pt' ? 'Switch to English' : 'Mudar para Português'

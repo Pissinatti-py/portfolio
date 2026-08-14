@@ -7,7 +7,7 @@ import Parallax from '@/components/ui/Parallax.vue'
 </script>
 
 <template>
-  <section id="experience" class="relative mx-auto max-w-6xl px-5 py-28 sm:px-8 sm:py-36">
+  <section id="experience" class="relative mx-auto max-w-page px-5 py-28 sm:px-8 sm:py-36">
     <SectionHeading :label="t('section.experience.label')" :title="t('section.experience.title')" />
 
     <ol class="relative">

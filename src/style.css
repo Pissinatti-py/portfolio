@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
   /* Purple and dark blue are a pair, not a colour and an accent. Each has a
      light tint because the dark tones sit at 3.4:1 and 2.9:1 on the surface —
@@ -21,11 +21,33 @@
   --color-text-muted: #71717a;
   --color-text-dim: #52525b;
   --color-text-subtle: #3f3f46;
-  --color-border: #27272a;
+  /* Card and divider edges. #27272a sat at ~1.4:1 on the surface, which worked
+     only because six decorative background layers were separating the cards
+     from the page. With one soft gradient behind them the edge has to do that
+     job itself. */
+  --color-border: #33333c;
 
   --color-accent: #1d4ed8;
   --color-accent-light: #60a5fa;
   --color-accent-deep: #172554;
+
+  /* Page width, in two parts.
+
+     `--container-page` is the content column — the `--container-*` namespace is
+     what Tailwind builds `max-w-*` from, so this gives every section a
+     `max-w-page` and one place to change it.
+
+     `--gutter-edge` is the narrower line the blueprint gutters stop at. The
+     gutters measure from it rather than from the column, so the two are no
+     longer locked together: the 2.5rem difference on each side is exactly how
+     far the content deliberately overlaps them. Widen the column without
+     touching the edge and the overlap grows.
+
+     Note the overlap is a fixed length, so it eats proportionally more of the
+     gutter as the viewport narrows. That is what sets the breakpoints in
+     BlueprintGutters.vue — below them there is more overlap than gutter. */
+  --container-page: 76rem;
+  --gutter-edge: 87rem;
 }
 
 html {
@@ -75,7 +97,7 @@ body {
 
 /* Film grain. feTurbulence baked into a data-URI so it costs no request. */
 .grain::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
