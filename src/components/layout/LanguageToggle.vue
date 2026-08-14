@@ -1,31 +1,29 @@
 <script setup lang="ts">
-import { locale, setLocale } from '@/i18n'
+import { locale, setLocale, type Locale } from '@/i18n'
 
-const options = [
-  { value: 'pt' as const, label: 'PT', flag: '🇧🇷' },
-  { value: 'en' as const, label: 'EN', flag: '🇺🇸' },
-]
+const options: Locale[] = ['en', 'pt']
 </script>
 
 <template>
   <div
-    class="inline-flex items-center gap-0.5 p-0.5 rounded-lg border border-[#27272a] bg-[#18181c]"
+    class="flex items-center rounded-full border border-border bg-surface-1/80 p-0.5 font-mono text-[11px]"
+    role="group"
+    aria-label="Language"
   >
     <button
-      v-for="opt in options"
-      :key="opt.value"
+      v-for="l in options"
+      :key="l"
       type="button"
-      class="flex items-center gap-1.5 px-2 py-1 rounded-md font-mono text-xs transition-colors duration-200"
+      class="rounded-full px-2.5 py-1 uppercase transition-colors"
       :class="
-        locale === opt.value
-          ? 'bg-[#222228] text-white'
-          : 'text-[#52525b] hover:text-[#a1a1aa]'
+        locale === l
+          ? 'bg-primary/15 text-primary'
+          : 'text-text-dim hover:text-text-body'
       "
-      :aria-pressed="locale === opt.value"
-      @click="setLocale(opt.value)"
+      :aria-pressed="locale === l"
+      @click="setLocale(l)"
     >
-      <span aria-hidden="true">{{ opt.flag }}</span>
-      {{ opt.label }}
+      {{ l }}
     </button>
   </div>
 </template>

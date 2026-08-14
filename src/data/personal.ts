@@ -1,27 +1,53 @@
 import type { I18nString } from '@/i18n'
 
 export const personal = {
-  name: "Marcus Vinicius",
+  name: 'Marcus Vinicius',
+  initials: 'MV',
   role: {
-    pt: "Engenheiro de Software Backend com olhar atento ao Fullstack",
-    en: "Backend Software Engineer with a Fullstack eye",
+    pt: 'Engenheiro de Software Backend',
+    en: 'Backend Software Engineer',
   } as I18nString,
-  tagline: {
-    pt: "Construindo produtos com propósito.",
-    en: "Building products with purpose.",
-  } as I18nString,
+  /** Cycled through by the hero typewriter. The first is the job title; the
+   *  rest are claims, not stack lists — a recruiter learns nothing from
+   *  "Python, FastAPI, Django". */
+  roleVariants: {
+    pt: [
+      'Engenheiro de Software Backend',
+      'Deixo sistema lento rápido e sistema frágil entediante',
+      'Entrego a parte que precisa ficar de pé às 3 da manhã',
+      'Leio o plano da query antes de culpar o front',
+    ],
+    en: [
+      'Backend Software Engineer',
+      'I make slow systems fast and fragile ones boring',
+      'I ship the part that has to stay up at 3am',
+      'I read the query plan before blaming the frontend',
+    ],
+  },
   about: {
-    pt: `Comecei no desenvolvimento querendo entender Redes Neurais — e acabei me apaixonando por backend. Hoje atuo na Samplemed construindo sistemas que precisam ser confiáveis, rápidos e fáceis de manter.
+    pt: `Entrei nisso querendo entender redes neurais. Treinei algumas — um mapa auto-organizável para fraude de crédito, uma RNN para prever ações — e descobri que gostava mais do que ficava embaixo: o serviço que precisa responder em 40ms enquanto outros três sistemas estão pegando fogo.
 
-Do banco de dados ao front, meu foco é eficiência. Não escrevo apenas código; construo sistemas que aguentam o tranco. Se você busca alguém que valoriza testes tanto quanto um deploy bem-feito e ainda entende que a experiência do usuário começa no backend, prazer, Marcus. Pode me chamar de Chuck.`,
-    en: `I got into development wanting to understand Neural Networks — and ended up falling in love with backend. Today I work at Samplemed building systems that need to be reliable, fast and easy to maintain.
+Então fui pro backend. Seis anos depois estou na Samplemed, numa plataforma de saúde multi-tenant onde cada cliente tem o próprio banco e nenhum deles quer saber disso. A lição que ficou: experiência do usuário começa no backend. Uma tela é lenta porque uma query é lenta.
 
-From the database to the front, my focus is efficiency. I don't just write code; I build systems that can take a beating. If you're looking for someone who values tests as much as a well-made deploy and still understands that the user experience starts in the backend — nice to meet you, I'm Marcus. You can call me Chuck.`,
+Prazer, Marcus. Os amigos antigos — e minha primeira conta no GitHub — me chamam de Chuck.`,
+    en: `I got into this wanting to understand neural networks. I trained a few — a self-organising map for credit fraud, an RNN for stock forecasting — and found out I cared more about what sat underneath: the service that has to answer in 40ms while three other systems are on fire.
+
+So I went backend. Six years later I'm at Samplemed on a multi-tenant health platform where every client gets their own database and none of them ever want to hear about it. The lesson that stuck: user experience starts at the backend. A screen is slow because a query is slow.
+
+I'm Marcus. Old friends — and my first GitHub account — call me Chuck.`,
   } as I18nString,
-  location: { pt: "Brasil", en: "Brazil" } as I18nString,
-  email: "marcusandrade.37@gmail.com",
-  emailUrl: "https://mail.google.com/mail/?view=cm&fs=1&to=marcusandrade.37@gmail.com",
-  github: "https://github.com/Pissinatti-py",
-  linkedin: "https://www.linkedin.com/in/marcusviniciusfonsecap",
-  instagram: "https://www.instagram.com/marcusvpissinatti",
-};
+  location: { pt: 'Brasil · Remoto', en: 'Brazil · Remote' } as I18nString,
+  email: 'marcusandrade.37@gmail.com',
+  emailUrl: 'https://mail.google.com/mail/?view=cm&fs=1&to=marcusandrade.37@gmail.com',
+  github: 'https://github.com/Pissinatti-py',
+  githubEarly: 'https://github.com/Chuckpy',
+  linkedin: 'https://www.linkedin.com/in/marcusviniciusfonsecap',
+  repo: 'https://github.com/Pissinatti-py/portfolio',
+}
+
+/** Short proof points shown under the hero. */
+export const stats: { value: string; label: I18nString }[] = [
+  { value: '6+', label: { pt: 'anos em produção', en: 'years in production' } },
+  { value: '20+', label: { pt: 'repositórios públicos', en: 'public repositories' } },
+  { value: 'Py · TS · Rust', label: { pt: 'stack principal', en: 'core stack' } },
+]

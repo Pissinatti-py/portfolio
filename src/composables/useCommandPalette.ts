@@ -18,8 +18,9 @@ export function togglePalette() {
 let bound = false
 
 /**
- * Registers the global keyboard shortcuts once, regardless of how many
- * components import this composable. ⌘K / Ctrl-K toggles, Esc closes.
+ * Registers the ⌘K / Ctrl-K toggle once, regardless of how many components
+ * import this composable. Escape is handled inside `CommandPalette.vue` — it
+ * needs to read the same `open` the template renders from.
  */
 function ensureGlobalKeybind() {
   if (bound || typeof window === 'undefined') return
@@ -28,9 +29,6 @@ function ensureGlobalKeybind() {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault()
       togglePalette()
-    } else if (e.key === 'Escape' && open.value) {
-      e.preventDefault()
-      closePalette()
     }
   })
 }

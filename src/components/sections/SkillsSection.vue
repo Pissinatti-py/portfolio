@@ -1,40 +1,45 @@
 <script setup lang="ts">
 import { skills } from '@/data/skills'
 import { t, tr } from '@/i18n'
-import RevealBlock from '@/components/ui/RevealBlock.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
+import RevealBlock from '@/components/ui/RevealBlock.vue'
 </script>
 
 <template>
-  <section id="skills" class="bg-[#18181c]/50 py-28">
-    <div class="mx-auto max-w-5xl px-6 lg:px-10">
-      <RevealBlock>
-        <SectionHeading :label="t('section.skills.label')" :title="t('section.skills.title')" />
-      </RevealBlock>
+  <section id="skills" class="relative overflow-hidden py-28 sm:py-36">
+    <div class="blueprint absolute inset-0 opacity-40" aria-hidden="true" />
 
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:[grid-auto-flow:dense]">
-        <RevealBlock
-          v-for="(group, i) in skills"
-          :key="group.category.en"
-          :delay="i * 80"
-          :class="group.items.length >= 8 ? 'sm:col-span-2' : ''"
+    <div class="relative mx-auto max-w-6xl px-5 sm:px-8">
+      <SectionHeading :label="t('section.skills.label')" :title="t('section.skills.title')" />
+
+      <!-- One reveal for the whole grid: the `gap-px` hairlines come from the
+           container's background, so fading cells individually would flash a
+           solid slab. -->
+      <RevealBlock>
+        <div
+          class="grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4"
         >
-          <div class="h-full rounded-xl border border-[#27272a] bg-[#18181c] p-6 transition-colors duration-300 hover:border-[#a855f7]/30">
-            <h3 class="mb-4 font-mono text-xs uppercase tracking-widest text-[#a855f7]">
+          <div
+            v-for="(group, i) in skills"
+            :key="group.category.en"
+            class="group bg-surface p-6 transition-colors duration-300 hover:bg-surface-1"
+          >
+            <p class="flex items-baseline gap-2 font-mono text-[11px] tracking-widest text-primary uppercase">
+              <span class="text-text-subtle">{{ String(i + 1).padStart(2, '0') }}</span>
               {{ tr(group.category) }}
-            </h3>
-            <ul class="flex flex-wrap gap-2">
+            </p>
+            <ul class="mt-4 space-y-1.5">
               <li
                 v-for="item in group.items"
                 :key="item"
-                class="cursor-default rounded-md border border-[#2c2c34] bg-[#222228] px-3 py-1 text-sm text-[#a1a1aa] transition-all duration-200 hover:border-[#a855f7]/40 hover:text-white"
+                class="text-sm text-text-muted transition-colors group-hover:text-text-body"
               >
                 {{ item }}
               </li>
             </ul>
           </div>
-        </RevealBlock>
-      </div>
+        </div>
+      </RevealBlock>
     </div>
   </section>
 </template>

@@ -14,12 +14,24 @@
   --color-surface-3: #2c2c34;
 
   --color-text: #e4e4e7;
+  --color-text-body: #a1a1aa;
   --color-text-muted: #71717a;
+  --color-text-dim: #52525b;
   --color-text-subtle: #3f3f46;
   --color-border: #27272a;
+
+  /* Secondary accent: navy blue. Purple carries every action and highlight;
+     navy carries depth — glows, gradients, the cool half of the cover art. */
+  --color-accent: #4361ee;
+  --color-accent-light: #7b93ff;
+  --color-accent-deep: #1b2a6b;
 }
 
 html {
+  /* Without this, Chrome's auto-dark-mode "helpfully" re-tints an already-dark
+     page and every surface drifts purple. It also gives native dark scrollbars
+     and form controls. */
+  color-scheme: dark;
   scroll-behavior: smooth;
   background-color: var(--color-surface);
   color: var(--color-text);
@@ -28,6 +40,7 @@ html {
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -50,4 +63,53 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-muted);
+}
+
+/* Anchor targets clear the sticky top nav. */
+[id] {
+  scroll-margin-top: 5rem;
+}
+
+/* --- Decorative surfaces ------------------------------------------------ */
+
+/* Film grain. feTurbulence baked into a data-URI so it costs no request. */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Blueprint grid backdrop, faded out toward the edges. */
+.blueprint {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-border) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 70%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 20%, transparent 75%);
+}
+
+/* --- Motion ------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Neutralise every entrance/parallax transform so content is simply there.
+     Directives (v-tilt, v-magnetic) and useParallax already bail out on their
+     own; this catches the CSS-driven half. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-parallax] {
+    transform: none !important;
+  }
 }

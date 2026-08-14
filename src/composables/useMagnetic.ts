@@ -1,8 +1,5 @@
 import type { Directive } from 'vue'
-
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+import { prefersReducedMotion } from './useParallax'
 
 const STRENGTH = 0.3 // fraction of cursor offset the element follows
 

@@ -1,56 +1,73 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import avatar from '@/assets/avatar.webp'
 import { personal } from '@/data/personal'
 import { t, tr } from '@/i18n'
-import RevealBlock from '@/components/ui/RevealBlock.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
-import avatar from '@/assets/avatar.webp'
+import RevealBlock from '@/components/ui/RevealBlock.vue'
+import Parallax from '@/components/ui/Parallax.vue'
+import Icon from '@/components/ui/Icon.vue'
+
+const paragraphs = computed(() => tr(personal.about).split('\n\n'))
+
+const accounts = [
+  { url: personal.github, handle: '@Pissinatti-py', note: 'links.currentWork' },
+  { url: personal.githubEarly, handle: '@Chuckpy', note: 'links.earlyWork' },
+] as const
 </script>
 
 <template>
-  <section id="sobre" class="py-28 max-w-5xl mx-auto px-6">
-    <RevealBlock>
-      <SectionHeading :label="t('section.about.label')" :title="t('section.about.title')" />
-    </RevealBlock>
+  <section id="about" class="relative mx-auto max-w-6xl px-5 py-28 sm:px-8 sm:py-36">
+    <SectionHeading :label="t('section.about.label')" :title="t('section.about.title')" />
 
-    <div class="grid md:grid-cols-5 gap-12 items-start">
-      <RevealBlock :delay="100" class="md:col-span-3 space-y-4">
-        <p
-          v-for="(paragraph, i) in tr(personal.about).split('\n')"
-          :key="i"
-          class="text-[#a1a1aa] leading-relaxed text-base"
-        >
-          {{ paragraph.trim() }}
-        </p>
-        <div class="pt-2">
-          <a
-            :href="personal.emailUrl"
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center gap-2 font-mono text-sm text-[#a855f7] hover:text-[#c084fc] transition-colors group"
-          >
-            {{ personal.email }}
-            <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
-      </RevealBlock>
+    <div class="grid gap-12 lg:grid-cols-[1fr_20rem] lg:gap-16">
+      <div class="order-2 lg:order-1">
+        <RevealBlock v-for="(para, i) in paragraphs" :key="i" :delay="i * 100">
+          <p class="mb-5 max-w-2xl text-base leading-relaxed text-text-body">{{ para }}</p>
+        </RevealBlock>
 
-      <RevealBlock :delay="200" direction="right" class="md:col-span-2">
-        <div class="relative group w-48 md:w-full max-w-xs mx-auto md:mx-0">
-          <div class="aspect-square rounded-2xl overflow-hidden border border-[#27272a]">
+        <RevealBlock :delay="300">
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a
+              v-for="acc in accounts"
+              :key="acc.handle"
+              :href="acc.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group inline-flex items-center gap-2.5 rounded-xl border border-border bg-surface-1/60 px-4 py-3 transition-colors hover:border-primary/45"
+            >
+              <Icon name="github" :size="18" class="text-text-muted transition-colors group-hover:text-primary" />
+              <span class="text-left">
+                <span class="block font-mono text-sm text-text">{{ acc.handle }}</span>
+                <span class="block font-mono text-[10px] tracking-wider text-text-dim uppercase">
+                  {{ t(acc.note) }}
+                </span>
+              </span>
+            </a>
+          </div>
+        </RevealBlock>
+      </div>
+
+      <!-- Portrait rises slightly against the copy beside it. -->
+      <Parallax :speed="-0.1" class="order-1 lg:order-2">
+        <RevealBlock direction="scale">
+          <div class="relative mx-auto w-56 sm:w-64 lg:w-full">
+            <span
+              class="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl border border-primary/50"
+              aria-hidden="true"
+            />
             <img
               :src="avatar"
               :alt="personal.name"
-              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              width="320"
+              height="320"
+              loading="lazy"
+              decoding="async"
+              class="relative w-full rounded-2xl border border-border object-cover grayscale transition-[filter] duration-500 hover:grayscale-0"
             />
           </div>
-          <!-- Borda decorativa -->
-          <div
-            class="absolute inset-0 rounded-2xl border border-[#a855f7]/30 translate-x-3 translate-y-3 -z-10 transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4"
-          />
-        </div>
-      </RevealBlock>
+        </RevealBlock>
+      </Parallax>
     </div>
   </section>
 </template>

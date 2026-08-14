@@ -1,138 +1,192 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { personal } from '@/data/personal'
-import { t, tr } from '@/i18n'
-import { vMagnetic } from '@/composables/useMagnetic'
+import { computed, onUnmounted, ref } from 'vue'
+import { personal, stats } from '@/data/personal'
+import { locale, t, tr } from '@/i18n'
 import { useTypewriter } from '@/composables/useTypewriter'
+import { useMouseParallax, prefersReducedMotion } from '@/composables/useParallax'
+import Parallax from '@/components/ui/Parallax.vue'
+import Icon from '@/components/ui/Icon.vue'
+import { vMagnetic } from '@/composables/useMagnetic'
 
-const { displayed: typedName, done: nameDone } = useTypewriter(personal.name, 55, 300)
+const variants = computed(() => personal.roleVariants[locale.value])
 
-const showSubtitle = ref(false)
-const showTagline = ref(false)
-const showLinks = ref(false)
+// Cycle the role line. useTypewriter restarts whenever its source ref changes,
+// so advancing the index is the whole animation.
+const index = ref(0)
+const current = computed(() => variants.value[index.value % variants.value.length])
+const { displayed, done } = useTypewriter(current, 45, 600)
 
-onMounted(() => {
-  const nameLen = personal.name.length
-  const nameDuration = 300 + nameLen * 55 + 200
-  setTimeout(() => (showSubtitle.value = true), nameDuration)
-  setTimeout(() => (showTagline.value = true), nameDuration + 300)
-  setTimeout(() => (showLinks.value = true), nameDuration + 600)
-})
+let timer: ReturnType<typeof setInterval> | undefined
+if (!prefersReducedMotion()) timer = setInterval(() => index.value++, 5200)
+onUnmounted(() => clearInterval(timer))
+
+const { el: glowA } = useMouseParallax(26)
+const { el: glowB } = useMouseParallax(-18)
+
+function go(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
 </script>
 
 <template>
-  <section class="min-h-screen flex items-center relative overflow-hidden">
-    <!-- Glow de fundo -->
+  <section
+    id="top"
+    class="grain relative flex min-h-[100svh] items-center overflow-hidden px-5 pt-24 pb-16 sm:px-8"
+  >
+    <!-- Backdrop layers, each moving at its own rate. -->
+    <Parallax :speed="-0.25" class="pointer-events-none absolute inset-0 -z-10">
+      <div class="blueprint absolute -inset-y-40 inset-x-0" />
+    </Parallax>
+
     <div
-      class="absolute -top-40 -left-40 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none"
-      style="background: radial-gradient(circle, #a855f7, transparent)"
+      ref="glowA"
+      class="pointer-events-none absolute -top-32 -left-24 -z-10 h-[34rem] w-[34rem] rounded-full bg-primary/20 blur-[120px]"
     />
     <div
-      class="absolute bottom-0 right-0 w-80 h-80 rounded-full opacity-5 blur-3xl pointer-events-none"
-      style="background: radial-gradient(circle, #c084fc, transparent)"
+      ref="glowB"
+      class="pointer-events-none absolute -right-40 bottom-0 -z-10 h-[28rem] w-[28rem] rounded-full bg-accent/20 blur-[130px]"
     />
 
-    <div class="max-w-5xl mx-auto px-6 pt-24 pb-16">
-      <p class="font-mono text-sm text-[#a855f7] tracking-widest uppercase mb-6 animate-fade-in">
+    <div class="relative mx-auto w-full max-w-6xl">
+      <!-- Availability: stated plainly, once, and never mentioned again. -->
+      <p
+        class="fade-up inline-flex items-center gap-2.5 rounded-full border border-primary/25 bg-primary/[0.07] py-1.5 pr-4 pl-3 font-mono text-[11px] tracking-wide text-primary-light"
+        style="animation-delay: 0.05s"
+      >
+        <span class="relative flex h-2 w-2">
+          <span class="ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+        </span>
+        {{ t('hero.available') }}
+      </p>
+
+      <p
+        class="fade-up mt-8 font-mono text-sm text-text-muted"
+        style="animation-delay: 0.15s"
+      >
         {{ t('hero.greeting') }}
       </p>
 
-      <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-4 min-h-[1.2em]">
-        {{ typedName }}<span
-          class="inline-block w-0.5 h-[0.9em] align-middle ml-1 bg-[#a855f7]"
-          :class="nameDone ? 'animate-blink' : ''"
-        />
+      <h1
+        class="fade-up mt-2 text-5xl font-bold tracking-tighter text-text sm:text-7xl lg:text-8xl"
+        style="animation-delay: 0.25s"
+      >
+        {{ personal.name }}<span class="text-primary">.</span>
       </h1>
 
-      <Transition name="fade-up">
-        <h2
-          v-if="showSubtitle"
-          class="text-2xl md:text-3xl font-medium text-[#71717a] mb-6"
+      <!-- Reserved height so the cycling line never reflows the page. -->
+      <p
+        class="fade-up mt-5 flex min-h-[5rem] items-start font-mono text-base text-primary-light sm:min-h-[2.5rem] sm:text-lg"
+        style="animation-delay: 0.35s"
+        aria-live="off"
+      >
+        <span class="text-text-dim">&gt;&nbsp;</span>
+        <span>{{ displayed }}<span class="caret" :class="done && 'blink'">▍</span></span>
+      </p>
+      <span class="sr-only">{{ tr(personal.role) }}</span>
+
+      <p
+        class="fade-up mt-8 max-w-2xl text-lg leading-relaxed text-text-body"
+        style="animation-delay: 0.45s"
+      >
+        {{ t('hero.pitch') }}
+      </p>
+
+      <div class="fade-up mt-10 flex flex-wrap items-center gap-3" style="animation-delay: 0.55s">
+        <button
+          v-magnetic
+          type="button"
+          class="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-light"
+          @click="go('work')"
         >
-          {{ tr(personal.role) }}
-        </h2>
-      </Transition>
-
-      <Transition name="fade-up">
-        <p
-          v-if="showTagline"
-          class="text-lg text-[#52525b] max-w-lg mb-10"
+          {{ t('hero.cta') }}
+          <Icon name="arrowRight" :size="15" class="transition-transform group-hover:translate-x-1" />
+        </button>
+        <button
+          v-magnetic
+          type="button"
+          class="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium text-text-body transition-colors hover:border-primary/50 hover:text-text"
+          @click="go('contact')"
         >
-          {{ tr(personal.tagline) }}
-        </p>
-      </Transition>
-
-      <Transition name="fade-up">
-        <div v-if="showLinks" class="flex items-center gap-4 flex-wrap">
-          <a
-            v-magnetic
-            href="#projetos"
-            class="px-5 py-2.5 bg-[#a855f7] hover:bg-[#9333ea] text-white text-sm font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/20"
-          >
-            {{ t('hero.cta') }}
-          </a>
-          <a
-            v-magnetic
-            :href="personal.github"
-            target="_blank"
-            rel="noopener"
-            class="px-5 py-2.5 border border-[#27272a] hover:border-[#a855f7] text-[#a1a1aa] hover:text-white text-sm font-medium rounded-lg transition-all duration-200"
-          >
-            GitHub
-          </a>
-          <a
-            v-magnetic
-            :href="personal.linkedin"
-            target="_blank"
-            rel="noopener"
-            class="px-5 py-2.5 border border-[#27272a] hover:border-[#a855f7] text-[#a1a1aa] hover:text-white text-sm font-medium rounded-lg transition-all duration-200"
-          >
-            LinkedIn
-          </a>
-        </div>
-      </Transition>
-
-      <!-- Scroll indicator -->
-      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-30 animate-bounce-slow">
-        <div class="w-px h-12 bg-gradient-to-b from-transparent to-[#a855f7]" />
-        <svg class="w-4 h-4 text-[#a855f7]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
-        </svg>
+          {{ t('hero.ctaAlt') }}
+        </button>
+        <span class="ml-1 inline-flex items-center gap-1.5 font-mono text-xs text-text-dim">
+          <Icon name="pin" :size="13" />
+          {{ tr(personal.location) }}
+        </span>
       </div>
+
+      <dl
+        class="fade-up mt-16 flex flex-wrap gap-x-12 gap-y-6 border-t border-border pt-8"
+        style="animation-delay: 0.7s"
+      >
+        <div v-for="stat in stats" :key="stat.value">
+          <dt class="font-mono text-3xl font-bold text-text">{{ stat.value }}</dt>
+          <dd class="mt-1 font-mono text-[11px] tracking-wider text-text-dim uppercase">
+            {{ tr(stat.label) }}
+          </dd>
+        </div>
+      </dl>
     </div>
+
+    <button
+      type="button"
+      class="absolute inset-x-0 bottom-6 mx-auto hidden w-fit flex-col items-center gap-1 font-mono text-[10px] tracking-[0.25em] text-text-subtle uppercase transition-colors hover:text-text-muted lg:flex"
+      @click="go('build')"
+    >
+      {{ t('hero.scroll') }}
+      <Icon name="arrowDown" :size="14" class="bob" />
+    </button>
   </section>
 </template>
 
 <style scoped>
+.fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.caret {
+  opacity: 1;
+}
+.blink {
+  animation: blink 1.1s step-end infinite;
+}
+.ping {
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.bob {
+  animation: bob 2.4s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
 @keyframes blink {
-  0%, 100% { opacity: 1 }
-  50% { opacity: 0 }
+  50% {
+    opacity: 0;
+  }
 }
-.animate-blink {
-  animation: blink 1s step-end infinite;
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
 }
-
-@keyframes bounce-slow {
-  0%, 100% { transform: translateX(-50%) translateY(0) }
-  50% { transform: translateX(-50%) translateY(6px) }
-}
-.animate-bounce-slow {
-  animation: bounce-slow 2s ease-in-out infinite;
-}
-
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(8px) }
-  to { opacity: 1; transform: translateY(0) }
-}
-.animate-fade-in {
-  animation: fade-in 0.6s ease-out both;
+@keyframes bob {
+  50% {
+    transform: translateY(5px);
+  }
 }
 
-.fade-up-enter-active {
-  transition: all 0.5s ease-out;
-}
-.fade-up-enter-from {
-  opacity: 0;
-  transform: translateY(12px);
+@media (prefers-reduced-motion: reduce) {
+  .fade-up,
+  .blink,
+  .ping,
+  .bob {
+    animation: none;
+  }
 }
 </style>

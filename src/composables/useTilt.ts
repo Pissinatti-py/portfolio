@@ -1,8 +1,5 @@
 import type { Directive } from 'vue'
-
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' &&
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+import { prefersReducedMotion } from './useParallax'
 
 const MAX = 7 // max rotation in degrees
 const SCALE = 1.02

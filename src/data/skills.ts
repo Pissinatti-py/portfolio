@@ -2,32 +2,41 @@ import type { I18nString } from '@/i18n'
 
 export interface SkillGroup {
   category: I18nString
+  /** Two-digit index rendered as a mono eyebrow on the card. */
   items: string[]
 }
 
 export const skills: SkillGroup[] = [
   {
+    category: { pt: 'Linguagens', en: 'Languages' },
+    items: ['Python', 'TypeScript', 'Rust', 'JavaScript', 'SQL'],
+  },
+  {
     category: { pt: 'Backend', en: 'Backend' },
-    items: ['Python', 'Django', 'FastAPI', 'DRF', 'Celery', 'SQLAlchemy', 'Alembic'],
+    items: ['FastAPI', 'Django', 'DRF', 'SQLAlchemy', 'Alembic', 'Celery', 'axum', 'Flask'],
   },
   {
-    category: { pt: 'Frontend', en: 'Frontend' },
-    items: ['Vue 3', 'TypeScript', 'JavaScript', 'Vite', 'Pinia', 'Vue Router', 'Tailwind CSS'],
-  },
-  {
-    category: { pt: 'Banco de Dados', en: 'Databases' },
+    category: { pt: 'Dados', en: 'Data' },
     items: ['PostgreSQL', 'pgvector', 'Redis', 'MySQL', 'SQLite'],
   },
   {
-    category: { pt: 'DevOps & Cloud', en: 'DevOps & Cloud' },
-    items: ['Docker', 'Docker Compose', 'AWS', 'Serverless', 'CI/CD', 'Nginx'],
+    category: { pt: 'IA & LLM', en: 'AI & LLM' },
+    items: ['LangGraph', 'RAG', 'Anthropic Claude', 'Ollama', 'pydantic-ai', 'fastembed', 'Keras'],
   },
   {
-    category: { pt: 'IA & Machine Learning', en: 'AI & Machine Learning' },
-    items: ['LangGraph', 'pydantic-ai', 'LangChain', 'RAG', 'Anthropic Claude', 'fastembed', 'Keras', 'NumPy', 'Pandas', 'Ollama'],
+    category: { pt: 'Infra & Entrega', en: 'Infra & Delivery' },
+    items: ['Docker', 'GitHub Actions', 'Prometheus', 'Grafana', 'Nginx', 'AWS', 'Serverless'],
   },
   {
-    category: { pt: 'Ferramentas', en: 'Tools' },
-    items: ['Git', 'pytest', 'Vitest', 'Cypress', 'Linux', 'REST APIs', 'WebSockets'],
+    category: { pt: 'Frontend', en: 'Frontend' },
+    items: ['Vue 3', 'Vite', 'Pinia', 'Tailwind CSS', 'Vue Router'],
+  },
+  {
+    category: { pt: 'Protocolos', en: 'Protocols' },
+    items: ['REST', 'WebSockets', 'SSE', 'JWT / JWKS', 'HMAC', 'OAuth2'],
+  },
+  {
+    category: { pt: 'Qualidade', en: 'Quality' },
+    items: ['pytest', 'Vitest', 'Cypress', 'ruff', 'black', 'Git'],
   },
 ]

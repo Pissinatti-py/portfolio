@@ -1,64 +1,76 @@
 <script setup lang="ts">
 import { personal } from '@/data/personal'
-import { t } from '@/i18n'
+import { t, tr } from '@/i18n'
 import { vMagnetic } from '@/composables/useMagnetic'
-import RevealBlock from '@/components/ui/RevealBlock.vue'
 import SectionHeading from '@/components/ui/SectionHeading.vue'
+import RevealBlock from '@/components/ui/RevealBlock.vue'
+import Icon from '@/components/ui/Icon.vue'
+import type { IconName } from '@/components/ui/Icon.vue'
+
+const links: { icon: IconName; label: string; url: string }[] = [
+  { icon: 'github', label: '@Pissinatti-py', url: personal.github },
+  { icon: 'github', label: '@Chuckpy', url: personal.githubEarly },
+  { icon: 'linkedin', label: 'LinkedIn', url: personal.linkedin },
+]
 </script>
 
 <template>
-  <section id="contato" class="py-28 max-w-5xl mx-auto px-6">
-    <RevealBlock>
+  <section id="contact" class="relative overflow-hidden px-5 py-28 sm:px-8 sm:py-36">
+    <div
+      class="pointer-events-none absolute -bottom-40 left-1/2 h-96 w-[42rem] -translate-x-1/2 rounded-full bg-primary/12 blur-[130px]"
+      aria-hidden="true"
+    />
+    <div
+      class="pointer-events-none absolute -bottom-32 left-[22%] h-72 w-[26rem] rounded-full bg-accent/15 blur-[130px]"
+      aria-hidden="true"
+    />
+
+    <div class="relative mx-auto max-w-6xl">
       <SectionHeading :label="t('section.contact.label')" :title="t('section.contact.title')" />
-    </RevealBlock>
 
-    <div class="max-w-xl">
-      <RevealBlock :delay="100">
-        <p class="text-[#71717a] leading-relaxed mb-10">
-          {{ t('contact.intro') }}
-        </p>
+      <RevealBlock>
+        <p class="max-w-2xl text-lg leading-relaxed text-text-body">{{ t('contact.intro') }}</p>
       </RevealBlock>
 
-      <RevealBlock :delay="200">
-        <a
-          v-magnetic
-          :href="personal.emailUrl"
-          target="_blank"
-          rel="noopener"
-          class="group inline-flex items-center gap-3 px-7 py-3.5 border border-[#a855f7]/50 rounded-lg text-[#a855f7] hover:bg-[#a855f7] hover:text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 font-medium"
-        >
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          {{ personal.email }}
-        </a>
+      <RevealBlock :delay="120">
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <a
+            v-magnetic
+            :href="personal.emailUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group inline-flex items-center gap-3 rounded-full bg-primary px-7 py-4 font-medium text-white transition-colors hover:bg-primary-light"
+          >
+            <Icon name="mail" :size="18" />
+            {{ t('contact.email') }}
+            <Icon name="arrowRight" :size="15" class="transition-transform group-hover:translate-x-1" />
+          </a>
+          <span class="font-mono text-xs text-text-dim">{{ t('contact.responds') }}</span>
+        </div>
       </RevealBlock>
 
-      <RevealBlock :delay="300">
-        <div class="flex items-center gap-4 mt-8">
+      <RevealBlock :delay="220">
+        <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-border pt-8">
           <a
-            :href="personal.github"
+            :href="personal.emailUrl"
             target="_blank"
-            rel="noopener"
-            class="flex items-center gap-2 text-sm text-[#52525b] hover:text-[#a1a1aa] transition-colors group"
+            rel="noopener noreferrer"
+            class="font-mono text-sm text-text-muted transition-colors hover:text-primary"
           >
-            <svg class="w-5 h-5 group-hover:text-[#a855f7] transition-colors" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-            </svg>
-            GitHub
+            {{ personal.email }}
           </a>
-          <span class="text-[#27272a]">·</span>
           <a
-            :href="personal.linkedin"
+            v-for="link in links"
+            :key="link.label"
+            :href="link.url"
             target="_blank"
-            rel="noopener"
-            class="flex items-center gap-2 text-sm text-[#52525b] hover:text-[#a1a1aa] transition-colors group"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 font-mono text-sm text-text-muted transition-colors hover:text-primary"
           >
-            <svg class="w-5 h-5 group-hover:text-[#a855f7] transition-colors" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-            </svg>
-            LinkedIn
+            <Icon :name="link.icon" :size="15" />
+            {{ link.label }}
           </a>
+          <span class="ml-auto font-mono text-xs text-text-dim">{{ tr(personal.location) }}</span>
         </div>
       </RevealBlock>
     </div>
