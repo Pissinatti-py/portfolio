@@ -16,15 +16,6 @@ const links: { icon: IconName; label: string; url: string }[] = [
 
 <template>
   <section id="contact" class="relative overflow-hidden px-5 py-28 sm:px-8 sm:py-36">
-    <div
-      class="pointer-events-none absolute -bottom-40 left-1/2 h-96 w-[42rem] -translate-x-1/2 rounded-full bg-primary/12 blur-[130px]"
-      aria-hidden="true"
-    />
-    <div
-      class="pointer-events-none absolute -bottom-32 left-[22%] h-72 w-[26rem] rounded-full bg-accent/15 blur-[130px]"
-      aria-hidden="true"
-    />
-
     <div class="relative mx-auto max-w-6xl">
       <SectionHeading :label="t('section.contact.label')" :title="t('section.contact.title')" />
 

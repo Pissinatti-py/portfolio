@@ -7,8 +7,6 @@ import RevealBlock from '@/components/ui/RevealBlock.vue'
 
 <template>
   <section id="skills" class="relative overflow-hidden py-28 sm:py-36">
-    <div class="blueprint absolute inset-0 opacity-40" aria-hidden="true" />
-
     <div class="relative mx-auto max-w-6xl px-5 sm:px-8">
       <SectionHeading :label="t('section.skills.label')" :title="t('section.skills.title')" />
 

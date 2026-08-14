@@ -3,8 +3,7 @@ import { computed, onUnmounted, ref } from 'vue'
 import { personal, stats } from '@/data/personal'
 import { locale, t, tr } from '@/i18n'
 import { useTypewriter } from '@/composables/useTypewriter'
-import { useMouseParallax, prefersReducedMotion } from '@/composables/useParallax'
-import Parallax from '@/components/ui/Parallax.vue'
+import { prefersReducedMotion } from '@/composables/useParallax'
 import Icon from '@/components/ui/Icon.vue'
 import { vMagnetic } from '@/composables/useMagnetic'
 
@@ -20,33 +19,17 @@ let timer: ReturnType<typeof setInterval> | undefined
 if (!prefersReducedMotion()) timer = setInterval(() => index.value++, 5200)
 onUnmounted(() => clearInterval(timer))
 
-const { el: glowA } = useMouseParallax(26)
-const { el: glowB } = useMouseParallax(-18)
-
 function go(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 </script>
 
 <template>
+  <!-- Backdrop comes from SiteBackground.vue, which runs behind the whole page. -->
   <section
     id="top"
-    class="grain relative flex min-h-[100svh] items-center overflow-hidden px-5 pt-24 pb-16 sm:px-8"
+    class="relative flex min-h-[100svh] items-center px-5 pt-24 pb-16 sm:px-8"
   >
-    <!-- Backdrop layers, each moving at its own rate. -->
-    <Parallax :speed="-0.25" class="pointer-events-none absolute inset-0 -z-10">
-      <div class="blueprint absolute -inset-y-40 inset-x-0" />
-    </Parallax>
-
-    <div
-      ref="glowA"
-      class="pointer-events-none absolute -top-32 -left-24 -z-10 h-[34rem] w-[34rem] rounded-full bg-primary/20 blur-[120px]"
-    />
-    <div
-      ref="glowB"
-      class="pointer-events-none absolute -right-40 bottom-0 -z-10 h-[28rem] w-[28rem] rounded-full bg-accent/20 blur-[130px]"
-    />
-
     <div class="relative mx-auto w-full max-w-6xl">
       <!-- Availability: stated plainly, once, and never mentioned again. -->
       <p
