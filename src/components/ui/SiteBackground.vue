@@ -6,7 +6,7 @@
  * Four depths move at different rates:
  *   aurora  — three blurred masses; scrolling walks the page past them, so the
  *             colour goes purple → navy → purple without animating any colour
- *   grid    — the blueprint tile
+ *   grid    — one blueprint tile, dim at rest and lit around the cursor
  *   nodes   — two densities of dim dots, the actual sense of depth
  *   traces  — long wires with a packet running down them, the same motif the
  *             project cover art uses
@@ -36,6 +36,9 @@ const traces = [
  *  a whole tile is indistinguishable, so the travel never has to be bounded. */
 const wrap = (v: number, m: number) => ((v % m) + m) % m
 
+/** Must match `background-size` on .grid in the style block below. */
+const GRID_TILE = 40
+
 let stop: (() => void) | undefined
 let onMove: ((e: MouseEvent) => void) | undefined
 let loopId = 0
@@ -58,8 +61,7 @@ onMounted(() => {
     // whatever the page ends up measuring.
     node.style.setProperty('--p', max > 0 ? String(Math.min(1, y / max)) : '0')
 
-    node.style.setProperty('--gf', String(-wrap(y * 0.03, 128)))
-    node.style.setProperty('--gy', String(-wrap(y * 0.06, 64)))
+    node.style.setProperty('--gy', String(-wrap(y * 0.06, GRID_TILE)))
     node.style.setProperty('--n1', String(-wrap(y * 0.1, 140)))
     node.style.setProperty('--n2', String(-wrap(y * 0.22, 92)))
   })
@@ -131,26 +133,24 @@ onUnmounted(() => {
       <span class="blob blob-c" />
     </div>
 
-    <!-- 2 — blueprint grid on two planes. Vignette lives on the wrapper so it
-         stays put relative to the viewport while the tiles underneath scroll. -->
-    <div class="vignette">
-      <div class="grid-far" data-parallax />
-      <div class="grid-base blueprint" data-parallax />
-    </div>
-
-    <!-- 3 — node field, two densities at two depths. -->
+    <!-- 2 — node field, two densities at two depths. Dots, not lines, so the
+         two planes read as depth instead of as a doubled grid. -->
     <div class="vignette">
       <div class="nodes nodes-far" data-parallax />
       <div class="nodes nodes-near" data-parallax />
     </div>
 
-    <!-- 4 — the lit plane. Same tiles as above at the same rates, drawn bold
-         and glowing, revealed only inside a circle that follows the cursor.
-         The mask sits on the wrapper and the parallax on the tiles, so the
-         light stays under the pointer while the grid scrolls beneath it. -->
-    <div class="spot">
-      <div class="grid-hot" data-parallax />
-      <div class="nodes-hot" data-parallax />
+    <!-- 3 — the grid. Exactly one, drawn bright once; the cursor mask carries
+         it from a dim floor up to full strength, so "lit near the pointer" is
+         a mask gradient rather than a second copy stacked on the first.
+         Vignette (viewport edges) and spot (cursor) nest so both masks apply;
+         the parallax is on the tile inside, so the light stays under the
+         pointer while the grid scrolls beneath it. -->
+    <div class="vignette">
+      <div class="spot">
+        <div class="grid" data-parallax />
+        <div class="nodes-hot" data-parallax />
+      </div>
     </div>
 
     <!-- 4 — signal traces: a dim wire, and a packet running along it. -->
@@ -188,7 +188,6 @@ onUnmounted(() => {
   --my: 0;
   --px: 0;
   --py: 0;
-  --gf: 0;
   --gy: 0;
   --n1: 0;
   --n2: 0;
@@ -254,61 +253,42 @@ onUnmounted(() => {
   opacity: 0.18;
 }
 
-/* --- 2. blueprint grid, two planes --------------------------------------- */
+/* --- 2. the grid --------------------------------------------------------- */
 
-.grid-far,
-.grid-base,
-.grid-hot {
+/* One grid, drawn at full strength. Each line sits at the CENTRE of its tile
+   with a symmetric halo, so the glow spreads evenly either side of the line
+   instead of trailing off to one side — and, being centred, it needs no
+   wrap-around stops.
+
+   The halo is baked into the gradient rather than done with filter: blur(),
+   which would repaint a full-viewport layer on every pointer move. Verticals
+   carry the purple, horizontals the blue.
+
+   GRID_TILE in the script must match the 40px background-size below. */
+.grid {
   position: absolute;
   inset: -160px;
   will-change: transform;
-}
-
-/* Coarser, dimmer, slower — the plane behind the working grid. */
-.grid-far {
-  background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--color-border) 55%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--color-border) 55%, transparent) 1px, transparent 1px);
-  background-size: 128px 128px;
-  transform: translate3d(
-    calc(var(--mx) * -14px),
-    calc(var(--gf) * 1px + var(--my) * -14px),
-    0
-  );
-}
-
-.grid-base {
-  transform: translate3d(
-    calc(var(--mx) * -30px),
-    calc(var(--gy) * 1px + var(--my) * -30px),
-    0
-  );
-}
-
-/* The lit grid. Its transform must match .grid-base exactly, or the glowing
-   lines drift off the lines they are supposed to be lighting.
-
-   The halo is baked into the gradient — a 1px core falling off over 8px —
-   rather than done with filter: blur(), which would repaint a full-viewport
-   layer every time the pointer moves. Verticals carry the purple, horizontals
-   the blue, so the two tones are woven through the grid itself. */
-.grid-hot {
   background-image:
     linear-gradient(
       to right,
-      transparent 0,
-      color-mix(in srgb, var(--color-primary-light) 85%, transparent) 1px,
-      color-mix(in srgb, var(--color-primary) 32%, transparent) 3px,
-      transparent 8px
+      transparent 14px,
+      color-mix(in srgb, var(--color-primary) 24%, transparent) 18px,
+      var(--color-primary-light) 19.5px,
+      var(--color-primary-light) 20.5px,
+      color-mix(in srgb, var(--color-primary) 24%, transparent) 22px,
+      transparent 26px
     ),
     linear-gradient(
       to bottom,
-      transparent 0,
-      color-mix(in srgb, var(--color-accent-light) 85%, transparent) 1px,
-      color-mix(in srgb, var(--color-accent) 32%, transparent) 3px,
-      transparent 8px
+      transparent 14px,
+      color-mix(in srgb, var(--color-accent) 24%, transparent) 18px,
+      var(--color-accent-light) 19.5px,
+      var(--color-accent-light) 20.5px,
+      color-mix(in srgb, var(--color-accent) 24%, transparent) 22px,
+      transparent 26px
     );
-  background-size: 64px 64px;
+  background-size: 40px 40px;
   transform: translate3d(
     calc(var(--mx) * -30px),
     calc(var(--gy) * 1px + var(--my) * -30px),
@@ -316,15 +296,18 @@ onUnmounted(() => {
   );
 }
 
-/* Circle of light that follows the cursor. */
+/* The cursor light. This does not reveal a second copy of the grid — it takes
+   the single grid from a dim resting floor up to full strength, which is why
+   there is nothing to misalign. */
 .spot {
   position: absolute;
   inset: 0;
   mask-image: radial-gradient(
-    circle 340px at calc(var(--px) * 1px) calc(var(--py) * 1px),
+    circle 320px at calc(var(--px) * 1px) calc(var(--py) * 1px),
     #000 0%,
-    rgba(0, 0, 0, 0.72) 34%,
-    transparent 72%
+    rgba(0, 0, 0, 0.7) 32%,
+    rgba(0, 0, 0, 0.1) 70%,
+    rgba(0, 0, 0, 0.1) 100%
   );
 }
 
@@ -338,7 +321,8 @@ onUnmounted(() => {
     transparent 2.4px
   );
   background-size: 92px 92px;
-  /* Must match .nodes-near, for the same reason .grid-hot matches .grid-base. */
+  /* Must match .nodes-near exactly, or the lit dots sit beside the dim ones
+     instead of on them. */
   transform: translate3d(
     calc(var(--mx) * -85px),
     calc(var(--n2) * 1px + var(--my) * -85px),
