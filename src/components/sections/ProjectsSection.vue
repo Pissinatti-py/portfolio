@@ -11,7 +11,7 @@ import Icon from '@/components/ui/Icon.vue'
 const activeTag = ref<Tag | null>(null)
 const showAll = ref(false)
 
-/** A tag filter searches everything; otherwise the featured six lead. */
+/** A tag filter searches everything; otherwise featured projects lead. */
 const visible = computed(() => {
   if (activeTag.value) return projects.filter((p) => p.tags.includes(activeTag.value!))
   return showAll.value ? projects : projects.filter((p) => p.featured)

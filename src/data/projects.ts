@@ -39,6 +39,20 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    id: 'pg-outbox-relay',
+    name: 'pg-outbox-relay',
+    description: {
+      pt: 'Um relay de outbox transacional em Rust: acompanha eventos pelo WAL do Postgres via replicação lógica e publica em SQS, SNS ou Redis Streams. Sem polling nem escrita dupla, com entrega pelo menos uma vez e suporte a vários bancos em um único binário.',
+      en: 'A transactional outbox relay in Rust: streams events from the Postgres WAL through logical replication and publishes to SQS, SNS or Redis Streams. No polling or dual writes, with at-least-once delivery and support for multiple databases in one binary.',
+    },
+    stack: ['Rust', 'PostgreSQL', 'Amazon SQS', 'Amazon SNS', 'Redis Streams', 'Prometheus', 'Docker'],
+    tags: ['Rust', 'Infra'],
+    motif: 'stream',
+    account: 'Pissinatti-py',
+    github: 'https://github.com/Pissinatti-py/pg-outbox-relay',
+    featured: true,
+  },
+  {
     id: 'finance-ai-assistant',
     name: 'finance-ai-assistant',
     description: {
