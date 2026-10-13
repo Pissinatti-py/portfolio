@@ -46,8 +46,8 @@ the third value — nothing else knows about locales.
 
 ### Adding a project
 
-Append to `src/data/projects.ts`. `motif` picks one of eight generated SVG covers
-(`queue`, `graph`, `stream`, `layers`, `neural`, `wave`, `grid`, `lock`) and `id`
+Append to `src/data/projects.ts`. `motif` picks one of nine generated SVG covers
+(`queue`, `graph`, `stream`, `relay`, `layers`, `neural`, `wave`, `grid`, `lock`) and `id`
 seeds a per-project variation, so reusing a motif still looks different. `tags`
 must come from the `TAGS` shortlist — that's what the filter row renders.
 Omit `github` and the card renders a "private" badge instead of a link.

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /**
- * Generated cover art. Eight abstract motifs, each drawn from the project's
+ * Generated cover art. Abstract motifs, each drawn from the project's
  * actual architecture idea, seeded by the project id so two projects sharing a
  * motif still look different. Pure SVG — no image files, no build step, and it
  * inherits the theme because everything is drawn in `currentColor`.
@@ -141,6 +141,65 @@ const wavePath = computed(() =>
         />
       </g>
 
+      <!-- relay: Postgres WAL, a bounded batch, broker adapters and an acknowledgement loop -->
+      <g v-else-if="motif === 'relay'" fill="none" stroke="currentColor" stroke-width="1.8">
+        <!-- Committed outbox rows inside the source database. -->
+        <path d="M32 61v34c0 12 48 12 48 0V61" fill="var(--color-surface)" />
+        <ellipse cx="56" cy="61" rx="24" ry="9" fill="var(--color-surface)" />
+        <path d="M32 78c0 12 48 12 48 0" stroke-opacity="0.35" />
+        <path d="M43 91h8m5 0h8" stroke-width="3" stroke-linecap="round" />
+
+        <!-- Logical replication carries discrete events into the relay. -->
+        <path class="march" d="M80 80h64" stroke-dasharray="3 7" stroke-opacity="0.5" />
+        <rect
+          v-for="i in 3"
+          :key="i"
+          :x="86 + i * 14"
+          y="75"
+          width="6"
+          height="10"
+          rx="1.5"
+          fill="var(--color-surface)"
+          :stroke-opacity="0.35 + i * 0.2"
+        />
+        <path d="M144 64l22-12 22 12v32l-22 12-22-12Z" fill="var(--color-surface)" />
+        <path d="M154 71h24M154 89h24" stroke-opacity="0.35" />
+        <circle
+          v-for="i in 3"
+          :key="`batch-${i}`"
+          class="pulse"
+          :cx="150 + i * 8"
+          cy="80"
+          r="2"
+          fill="currentColor"
+          stroke="none"
+          :style="{ animationDelay: `${i * 0.35}s` }"
+        />
+
+        <!-- Available broker adapters share the same publication pipeline. -->
+        <g stroke="var(--color-accent-light)">
+          <path d="M188 80h20m0-27v54m0-54h30m-30 27h30m-30 27h30" stroke-opacity="0.45" />
+          <path class="march" d="M188 80h50" stroke-dasharray="3 8" />
+          <g v-for="(broker, i) in ['SQS', 'SNS', 'REDIS']" :key="broker">
+            <rect x="238" :y="43 + i * 27" width="48" height="20" rx="4" fill="var(--color-surface)" stroke-opacity="0.75" />
+            <text
+              x="262"
+              :y="56 + i * 27"
+              text-anchor="middle"
+              fill="var(--color-accent-light)"
+              stroke="none"
+              font-family="monospace"
+              font-size="8"
+              letter-spacing="1"
+            >{{ broker }}</text>
+          </g>
+          <!-- The confirmed position returns to Postgres only after publication. -->
+          <path class="march relay-ack" d="M262 117v11H56v-18" stroke-dasharray="3 7" stroke-opacity="0.45" />
+          <path d="m52 115 4-5 4 5m142 8 3 3 6-7" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.8" />
+        </g>
+        <text x="112" y="65" text-anchor="middle" fill="currentColor" fill-opacity="0.65" stroke="none" font-family="monospace" font-size="8" letter-spacing="1.5">WAL</text>
+      </g>
+
       <!-- layers: stacked slabs, a clean-architecture stack -->
       <g v-else-if="motif === 'layers'" stroke="currentColor" fill="none" stroke-width="2">
         <g v-for="i in 4" :key="i">
@@ -240,6 +299,9 @@ const wavePath = computed(() =>
 <style scoped>
 .march {
   animation: march 4s linear infinite;
+}
+.relay-ack {
+  animation-duration: 8s;
 }
 .pulse {
   animation: pulse 3.2s ease-in-out infinite;

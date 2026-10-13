@@ -2,7 +2,7 @@ import type { I18nString } from '@/i18n'
 
 /** Abstract cover-art motifs. Fewer motifs than projects on purpose — the
  *  `id` seeds a variation so two projects sharing a motif still differ. */
-export type Motif = 'queue' | 'graph' | 'stream' | 'layers' | 'neural' | 'wave' | 'grid' | 'lock'
+export type Motif = 'queue' | 'graph' | 'stream' | 'relay' | 'layers' | 'neural' | 'wave' | 'grid' | 'lock'
 
 export type Account = 'Pissinatti-py' | 'Chuckpy'
 
@@ -47,7 +47,7 @@ export const projects: Project[] = [
     },
     stack: ['Rust', 'PostgreSQL', 'Amazon SQS', 'Amazon SNS', 'Redis Streams', 'Prometheus', 'Docker'],
     tags: ['Rust', 'Infra'],
-    motif: 'stream',
+    motif: 'relay',
     account: 'Pissinatti-py',
     github: 'https://github.com/Pissinatti-py/pg-outbox-relay',
     featured: true,
